@@ -16,7 +16,40 @@
 
     <ul class="menu-inner py-1">
       <!-- e-commerce-app menu end -->
-    
+
+      <li class="menu-item ">
+        <a href="#" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-world"></i>
+          <div data-i18n="Country">Dashboard</div>
+        </a>
+      </li>
+
+      <li class="menu-item ">
+        <a href="#" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-world"></i>
+          <div data-i18n="Documentation">Documentation</div>
+        </a>
+      </li>
+
+
+      <li class="menu-item ">
+        <a href="#" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-world"></i>
+          <div data-i18n="FAQs">FAQs</div>
+        </a>
+      </li>
+
+
+      <li class="menu-item ">
+        <a href="#" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-world"></i>
+          <div data-i18n="Country">Dashboard</div>
+        </a>
+      </li>
+
+
+
+
       @canany(['addKYC', 'addDocuments','addSales','addServices'], App\Models\User::class)
       <li class="menu-item {{ Request::is('merchants') || Request::is('merchantskyc') || Request::is('merchantsdocuments') || Request::is('merchantsSales') ||  Request::is('merchantService') ? 'open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -37,8 +70,8 @@
             </li> --}}
         </ul>
        
-    </li>
-    @endcanany
+      </li>
+      @endcanany
 
     @canany(['toggleCountriesSection', 'toggleDepartmentsSection', 'toggleDocumentsSection', 'toggleMerchantCategoriesSection', 'toggleActivityLogsSection'], App\Models\User::class)
     <li class="menu-header small text-uppercase text-muted fw-bold">Settings</li>
