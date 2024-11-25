@@ -185,13 +185,13 @@
         <!-- Register -->
         <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
           <div class="w-px-400 mx-auto mt-12 pt-5">
-            <h4 class="mb-1">Welcoeme to Tess 🚀</h4>
+            <h4 class="mb-1">Welcome to Tess 🚀</h4>
 
             <form id="formAuthentication" class="mb-6" action="{{ route('users.store') }}" method="POST">
               @csrf  <!-- This is necessary for POST requests in Laravel -->
           
               <div class="mb-6">
-                  <label for="userFullname" class="form-label">Merchantname</label>
+                  <label for="userFullname" class="form-label">Merchant Name</label>
                   <input
                       type="text"
                       class="form-control @error('userFullname') is-invalid @enderror"
