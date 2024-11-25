@@ -1,0 +1,9 @@
+RewriteEngine On
+
+php_value max_input_vars 300000
+php_value suhosin.get.max_vars 300000
+php_value suhosin.post.max_vars 300000
+php_value suhosin.request.max_vars 300000
+
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [L,QSA]
