@@ -14,39 +14,41 @@
 
     <div class="menu-inner-shadow"></div>
 
-    <ul class="menu-inner py-1">
+    <ul class="menu-inner py-5">
       <!-- e-commerce-app menu end -->
 
       <li class="menu-item ">
         <a href="#" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-world"></i>
+          <i class="menu-icon tf-icons ti ti-layout-kanban"></i>
           <div data-i18n="Country">Dashboard</div>
         </a>
       </li>
 
       <li class="menu-item ">
         <a href="#" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-world"></i>
+          <i class="menu-icon tf-icons ti ti-file"></i>
           <div data-i18n="Documentation">Documentation</div>
         </a>
       </li>
 
+      <li class="menu-item ">
+        <a href="#" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-file-description"></i>
+          <div data-i18n="Country">Document History</div>
+        </a>
+      </li>
+
+
 
       <li class="menu-item ">
         <a href="#" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-world"></i>
+          <i class="menu-icon tf-icons ti ti-components"></i>
           <div data-i18n="FAQs">FAQs</div>
         </a>
       </li>
 
 
-      <li class="menu-item ">
-        <a href="#" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-world"></i>
-          <div data-i18n="Country">Dashboard</div>
-        </a>
-      </li>
-
+ 
 
 
 

@@ -11,20 +11,17 @@
 <div class="content-wrapper">
     <!-- Content -->
 
-    {{-- <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="container-xxl flex-grow-1 container-p-y">
       <div class="row g-6">
-        <!-- View sales -->
+
         <div class="col-xl-4">
           <div class="card">
             <div class="d-flex align-items-end row">
               <div class="col-7">
                 <div class="card-body text-nowrap">
-                  <h5 class="card-title mb-10" style="">Welcome to KYC 🎉</h5>
-                 
-                 
-        
-                  <a href="#" class="btn btn-primary">View Merchants</a>
-                </div>
+                  <h5 class="card-title mb-5" style="">Step 1: Completed</h5>
+                  <a href="#" class="btn btn-primary" style="background: rgba(0, 128, 0, 0.78);">Basic Information</a>
+                </div>  
               </div>
               <div class="col-5 text-center text-sm-left">
                 <div class="card-body pb-0 px-0 px-md-4">
@@ -37,10 +34,55 @@
             </div>
           </div>
         </div>
-        <!-- View sales -->
 
+
+       
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="d-flex align-items-end row">
+              <div class="col-7">
+                <div class="card-body text-nowrap">
+                  <h5 class="card-title mb-5" style="">Step 2: Completed</h5>
+                  <a href="#" class="btn btn-primary" style="background: rgba(255, 87, 34, 0.84);">Upload Documents</a>
+                </div>  
+              </div>
+              <div class="col-5 text-center text-sm-left">
+                <div class="card-body pb-0 px-0 px-md-4">
+                  <img
+                    src="../../assets/img/illustrations/card-advance-sale.png"
+                    height="140"
+                    alt="view sales" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="d-flex align-items-end row">
+              <div class="col-7">
+                <div class="card-body text-nowrap">
+                  <h5 class="card-title mb-5" style="">Step 3: Completed</h5>
+                  <a href="#" class="btn btn-primary" style="background: #666;">Account Verified</a>
+                </div>  
+              </div>
+              <div class="col-5 text-center text-sm-left">
+                <div class="card-body pb-0 px-0 px-md-4">
+                  <img
+                    src="../../assets/img/illustrations/card-advance-sale.png"
+                    height="140"
+                    alt="view sales" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- View sales -->
+        
         <!-- Statistics -->
-        <div class="col-xl-8 col-md-12">
+        {{-- <div class="col-xl-8 col-md-12">
           <div class="card h-100">
             <div class="card-header d-flex justify-content-between">
               <h5 class="card-title mb-0">Statistics</h5>
@@ -119,14 +161,14 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> --}}
         <!--/ Statistics -->
 
     
    
    
       </div>
-    </div> --}}
+    </div>
     <!-- / Content -->
 </div>
 
