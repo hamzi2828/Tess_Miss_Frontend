@@ -155,9 +155,6 @@
 
 <body>
 
-
-    <!-- Content -->
-
     <div class="authentication-wrapper authentication-cover">
       <!-- Logo -->
       <a href="/" class="menu-linkapp-brand auth-cover-brand">
@@ -169,15 +166,15 @@
         <div class="d-none d-lg-flex col-lg-8 p-0">
           <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
             <img
-              src="../../assets/img/illustrations/auth-login-illustration-light.png"
-              alt="auth-login-cover"
+              src="../../assets/img/illustrations/auth-register-illustration-light.png"
+              alt="auth-register-cover"
               class="my-5 auth-illustration"
-              data-app-light-img="illustrations/auth-login-illustration-light.png"
-              data-app-dark-img="illustrations/auth-login-illustration-dark.png" />
+              data-app-light-img="illustrations/auth-register-illustration-light.png"
+              data-app-dark-img="illustrations/auth-register-illustration-dark.png" />
 
             <img
               src="../../assets/img/illustrations/bg-shape-image-light.png"
-              alt="auth-login-cover"
+              alt="auth-register-cover"
               class="platform-bg"
               data-app-light-img="illustrations/bg-shape-image-light.png"
               data-app-dark-img="illustrations/bg-shape-image-dark.png" />
@@ -185,33 +182,63 @@
         </div>
         <!-- /Left Text -->
 
-        <!-- Login -->
+        <!-- Register -->
         <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
           <div class="w-px-400 mx-auto mt-12 pt-5">
-            @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+            <h4 class="mb-1">Adventure starts here 🚀</h4>
+
+            <form id="formAuthentication" class="mb-6" action="{{ route('users.store') }}" method="POST">
+              @csrf  <!-- This is necessary for POST requests in Laravel -->
+          
+              <div class="mb-6">
+                  <label for="userFullname" class="form-label">Merchantname</label>
+                  <input
+                      type="text"
+                      class="form-control @error('userFullname') is-invalid @enderror"
+                      id="userFullname"
+                      name="userFullname"
+                      placeholder="Enter your merchant name"
+                      value="{{ old('userFullname') }}"
+                      autofocus
+                  />
+                  @error('userFullname')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
+              </div>
+
+              <div class="mb-6">
+                <label for="phone" class="form-label">Phone Number</label>
+                <div class="input-group input-group-merge">
+                  <span id="basic-icon-default-phone2" class="input-group-text">
+                    <i data-feather="phone" class="icon text-primary"></i>
+                  </span>
+                  <input
+                    type="number"
+                    class="form-control @error('phone') is-invalid @enderror phone-number-mask"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                    value="{{ old('phone') }}"
+                    autofocus
+                  />
+                </div>
+                @error('phone')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
-        @endif
 
-            <h4 class="mb-1">Welcome to Tess! 👋</h4>
-
-        
-            <form id="formAuthentication" class="mb-4" action="{{ route('login') }}" method="POST">
-              @csrf 
           
               <div class="mb-6">
                   <label for="email" class="form-label">Email</label>
                   <input
                       type="text"
-                      class="form-control @error('email') is-invalid @enderror"
-                      id="email"
-                      name="email"
-                      value="{{ old('email') }}"
-                      placeholder="Enter your email"
-                      autofocus
+                      class="form-control @error('userEmail') is-invalid @enderror"
+                      id="userEmail"
+                      name="userEmail"
+                      placeholder="Enter your userEmail"
+                      value="{{ old('userEmail') }}"
                   />
-                  @error('email')
+                  @error('userEmail')
                       <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
               </div>
@@ -234,38 +261,42 @@
                   @enderror
               </div>
           
-              <div class="my-8">
-                  <div class="d-flex justify-content-between">
-                      <div class="form-check mb-0 ms-2">
-                          <input class="form-check-input" type="checkbox" id="remember-me" />
-                          <label class="form-check-label" for="remember-me"> Remember Me </label>
-                      </div>
-                      {{-- <a href="auth-forgot-password-cover.html">
-                          <p class="mb-0">Forgot Password?</p>
-                      </a> --}}
+              <div class="mb-6 mt-8">
+                  <div class="form-check mb-8 ms-2">
+                      <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox" id="terms-conditions" name="terms" {{ old('terms') ? 'checked' : '' }} required />
+                      <label class="form-check-label" for="terms-conditions">
+                          I agree to
+                          <a href="javascript:void(0);">privacy policy & terms</a>
+                      </label>
+                      @error('terms')
+                          <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
                   </div>
+                  @error('terms')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
               </div>
           
-              <button class="btn btn-primary d-grid w-100">Sign in</button>
+              <button class="btn btn-primary d-grid w-100">Sign up</button>
           </form>
           
 
             <p class="text-center">
-              <span>New on our platform?</span>
-              <a href="{{ route('users.register') }}">
-                <span>Create an account</span>
+              <span>Already have an account?</span>
+              <a href="{{ route('login') }}">
+                <span>Sign in instead</span>
               </a>
             </p>
 
-         
-
+  
           </div>
         </div>
-        <!-- /Login -->
+        <!-- /Register -->
       </div>
-    </div>    
- 
-    <!-- / Content --> 
+    </div>
+
+    <!-- / Content -->
+
 
     @include('layouts.footer')
 

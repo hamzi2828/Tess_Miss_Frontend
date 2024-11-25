@@ -23,7 +23,7 @@
                  
                  
         
-                  <a href="{{ route('merchants.index') }}" class="btn btn-primary">View Merchants</a>
+                  <a href="#" class="btn btn-primary">View Merchants</a>
                 </div>
               </div>
               <div class="col-5 text-center text-sm-left">

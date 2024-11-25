@@ -42,11 +42,10 @@ class UserController extends Controller
     }
 
 
-    public function create(){
+    public function showRegistrationForm(){
 
-        $departments = Department::all();
-
-        return view('pages.users.create-user', compact('departments'));
+    
+        return view('auth.register');
     }
     /**
      * Store a newly created resource in storage.
@@ -54,16 +53,16 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-
+ 
         // Validate the request data
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
-            'userPassword' => 'required|string|min:5',
+            'password' => 'required|string|min:5',
             'userEmail' => 'required|email|unique:users,email',
-            'userPhone' => 'nullable|string|max:20',
-            'department_id' => 'required|exists:departments,id',
+            'phone' => 'required|string|max:20|unique:users,phone',
+            'department_id' => 'nullable|exists:departments,id',
             'user_role' => 'nullable|string',
-            'userStatus' => 'required|in:active,inactive',
+            'userStatus' => 'nullable|in:active,inactive',
             'userAddress' => 'nullable|string|max:500',
             'userPicture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'userGender' => 'nullable|in:male,female',
@@ -71,10 +70,12 @@ class UserController extends Controller
 
         // Use the UserService to create the user and get the created user object
         $user = $this->userService->createUser($validatedData);
-
+        return redirect()->route('login')->with('success', 'User created successfully. Please log in.');
         // Redirect with success message to edit the newly created user
-        return redirect()->route('users.edit', ['user_id' => $user->id])->with('success', 'User created successfully.');
+        // return redirect()->route('users.edit', ['user_id' => $user->id])->with('success', 'User created successfully.');
     }
+
+
     public function edit(Request $request)
     {
         // Get the user ID from the request
@@ -102,7 +103,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
             'userEmail' => 'required|email|max:255',
-            'userPhone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20',
             'department_id' => 'required|exists:departments,id',
             'user_role' => 'nullable|string|max:50',
             'userStatus' => 'required|string|in:active,inactive',
@@ -126,6 +127,7 @@ class UserController extends Controller
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'User updated successfully');
+       
     }
 
     /**

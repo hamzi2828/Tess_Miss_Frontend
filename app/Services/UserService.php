@@ -29,13 +29,13 @@ class UserService
         return User::create([
             'name' => $data['userFullname'],
             'email' => $data['userEmail'],
-            'password' => Hash::make($data['userPassword']), // Hash the password
-            'phone' => $data['userPhone'],
+            'password' => Hash::make($data['password']), // Hash the password
+            'phone' => $data['phone'],
             'department' => $data['department_id'] ?? 'null',
-            'role' => $data['user_role'] ?? 'user',
-            'status' => $data['userStatus'],
+            'role' => $data['user_role'] ?? 'frontendUser',
+            'status' => $data['userStatus'] ?? 'active',
             'address' => $data['userAddress'] ?? 'null',
-            'picture' => $filePath, // Store image path
+            'picture' => $filePath,
             'userGender' => $data['userGender'] ?? 'null',
         ]);
     }
