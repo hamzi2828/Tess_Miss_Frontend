@@ -117,11 +117,11 @@ class MerchantsController extends Controller
             }
         }
 
-        if (auth()->user()->can('addDocuments', auth()->user())) {
-            return view('pages.merchants.create.create-merchants-documents', compact('merchant_documents', 'title', 'merchant_shareholders'));
-        } else {
-            return redirect()->back()->with('error', 'You are not authorized.');
-        }
+        // if (!auth()->user()->can('addDocuments', auth()->user())) {
+        //     return redirect()->back()->with('error', 'You are not authorized.');
+        // }  
+       return view('pages.merchants.create.create-merchants-documents', compact('merchant_documents', 'title', 'merchant_shareholders'));
+
     }
 
 
@@ -291,9 +291,10 @@ class MerchantsController extends Controller
  
          $this->notificationService->storeMerchantsDocuments($merchant_id);
 
-         return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
-             ->with('success', 'Documents uploaded and saved successfully.')
-             ->withInput($request->all());
+        //  return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
+        //      ->with('success', 'Documents uploaded and saved successfully.')
+        //      ->withInput($request->all());
+        return redirect()->route('dashboard');
      }
 
 
@@ -397,18 +398,22 @@ class MerchantsController extends Controller
 
         
         if ($merchant_details->documents->isEmpty()) {
+           
             return redirect()->route('create.merchants.documents', ['merchant_id' => $merchant_id]);
         }
-        if (auth()->user()->can('changeDocuments', auth()->user()))
-        {
+        // if (!auth()->user()->can('changeDocuments', auth()->user()))
+        // {
+        //     return redirect()->back()->with('error', 'You are not authorized.');
+        // }
             if (is_null($merchant_details->approved_by)) {
                 return redirect()->back()->with('error', 'kyc not approved yet.');
                 }
-
+               
+            if (is_null($merchant_details->documents->first()->declined_by)) {
+                return redirect()->back()->with('error', 'Documents not declined yet.');
+            }
             return view('pages.merchants.edit.edit-merchants-documents', compact('merchant_details', 'title', 'all_documents'));
-        }else{
-            return redirect()->back()->with('error', 'You are not authorized.');
-        }
+        
     }
 
 
@@ -496,7 +501,7 @@ class MerchantsController extends Controller
         $merchant = Merchant::where('id', $merchant_id)->first();
 
         
-        if (auth()->user()->role === 'user' && $merchant->approved_by !== null) {
+        if (auth()->user()->role === 'frontendUser' && $merchant->approved_by !== null) {
             return redirect()->back()->with('error', 'You are not authorized to edit this KYC as it has already been approved.');
         }
         
@@ -541,13 +546,14 @@ class MerchantsController extends Controller
         $merchant = Merchant::with(['documents', 'sales', 'services', 'shareholders'])->find($merchant_id);
 
         if (
-            auth()->user()->role === 'user' &&
+            auth()->user()->role === 'frontendUser' &&
             $merchant &&
             $merchant->documents->every(fn($document) => $document->approved_by !== null)
         ) {
             return redirect()->back()->with('error', 'You are not authorized to edit these documents as they have already been approved.');
         }
 
+    
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'document_') === 0 && $request->hasFile($key)) {
                 $keyParts = explode('_', $key);
@@ -593,7 +599,7 @@ class MerchantsController extends Controller
                         'document_type' => $file->getClientMimeType(),
                         'emailed' => false,
                         'status' => true,
-                        
+                        'declined_by' => null, 
                     ]);
                 } else {
                     // If no previous document exists, create a new record
@@ -607,6 +613,7 @@ class MerchantsController extends Controller
                         'document_type' => $file->getClientMimeType(),
                         'emailed' => false,
                         'status' => true,
+                        'declined_by' => null, 
                     ]);
                 }
             }
@@ -626,12 +633,14 @@ class MerchantsController extends Controller
         }
         $merchant = Merchant::with('documents')->find($merchant_id);
 
+
         if ($merchant) {
             $merchant->documents->each(function ($document) {
                 $document->update(['approved_by' => null]);
             });
         }
-        
+        MerchantDocument::where('merchant_id', $merchant_id)
+            ->update(['declined_by' => null]);
         // Reset approvals for sales and services
         MerchantSale::where('merchant_id', $merchant_id)
             ->update(['approved_by' => null]);
@@ -640,7 +649,9 @@ class MerchantsController extends Controller
             ->update(['approved_by' => null]);
         
         session()->forget('print_decline_notes');
-        return redirect()->back()->with('success', 'Documents successfully updated.');
+       
+        $this->notificationService->storeMerchantsDocuments($merchant_id);
+        return redirect()->route('dashboard');
     }
 
 

@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/merchants/decline/kyc', [MerchantsController::class, 'declineKYC'])->name('decline.merchants.kyc');
     });
 
-    Route::middleware(['auth', 'checkStage:2'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
         Route::get('/createMerchantsDocuments', [MerchantsController::class, 'create_merchants_documents'])->name('create.merchants.documents');
         Route::post('/storeMerchantsDocuments', [MerchantsController::class, 'store_merchants_documents'])->name('store.merchants.documents');
         Route::get('/editMechnatDocuments', [MerchantsController::class, 'edit_merchants_documents'])->name('edit.merchants.documents');

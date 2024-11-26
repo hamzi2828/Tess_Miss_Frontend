@@ -22,7 +22,11 @@
                   @if($merchant_details)
                    <h5 class="card-title mb-5" style="">Basic information has been submitted.</h5>
                   @endif
+                  @if($merchant_details->approved_by)
                     <h5 class="card-title mb-5" style="">Step 1: Completed</h5>
+                  @else
+                    <h5 class="card-title mb-5" style="">Step 1: Pending Approval</h5>
+                  @endif
                   @if($merchant_details)
                     <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary disabled" 
                     style="background: rgba(0, 128, 0, 0.78); pointer-events: none; opacity: 0.65;" 
@@ -56,8 +60,34 @@
             <div class="d-flex align-items-end row">
               <div class="col-7">
                 <div class="card-body text-nowrap">
-                  <h5 class="card-title mb-5" style="">Step 2: Completed</h5>
-                  <a href="#" class="btn btn-primary" style="background: rgba(255, 87, 34, 0.84);">Upload Documents</a>
+                  @if($merchant_details->documents)
+                  <h5 class="card-title mb-5" style="">information has been submitted.</h5>
+                 @endif
+                  @if(!$merchant_details->documents)
+                  <h5 class="card-title mb-5" style="">Documents required to complete the profile.</h5>
+                 @endif
+                 @php
+                      $allDocumentsApproved = $merchant_details->documents->every(function ($document) {
+                          return !is_null($document->approved_by);
+                      });
+                  @endphp
+                  
+                  @if($allDocumentsApproved)
+                      <h5 class="card-title mb-5" style="">Step 2: Completed</h5>
+                  @else
+                      <h5 class="card-title mb-5" style="">Step 2: Pending Approval</h5>
+                  @endif   
+
+
+                  @if($merchant_details->documents)
+                  <a href="{{ route('create.merchants.documents') }}" class="btn btn-primary disabled" 
+                  style="background: rgba(255, 87, 34, 0.84); pointer-events: none; opacity: 0.65;" 
+                  aria-disabled="true">Upload Documents</a>
+                @else
+                <a href="{{ route('create.merchants.documents') }}" class="btn btn-primary" 
+                    style="background: rgba(255, 87, 34, 0.84);">Upload Documents</a>
+                 @endif
+
                 </div>  
               </div>
               <div class="col-5 text-center text-sm-left">

@@ -28,6 +28,7 @@ class NotificationService
         // Fetch merchant and related data
         $merchant = Merchant::with(['documents', 'sales', 'services', 'shareholders'])->where('id', $merchantId)->first();
 
+
         if (!$merchant) {
             return back()->with('error', 'Merchant documents not found.');
         }

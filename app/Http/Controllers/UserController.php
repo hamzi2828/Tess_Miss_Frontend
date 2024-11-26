@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $merchantId = Auth::user()->id;
         
-        $merchant_details = Merchant::where('added_by', $merchantId)->first();
+        $merchant_details = Merchant::with('documents')->where('added_by', $merchantId)->first();
         if($merchant_details){
             return view('pages.dashboard.index', compact('merchant_details'));
         }else{
@@ -196,7 +196,12 @@ class UserController extends Controller
 
 
                     if($userrole == 'frontendUser'){
-                        return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+                        $merchant = Merchant::where('id', $merchant_id)->first();
+                        if($merchant->approved_by == null){
+                            return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+                        }else{
+                            return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id]);
+                        }
                     }
                     // Determine the route name dynamically based on stage
                     $routeName = $userStage == 1 
