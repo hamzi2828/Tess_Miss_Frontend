@@ -36,8 +36,11 @@ class UserController extends Controller
         $merchantId = Auth::user()->id;
         
         $merchant_details = Merchant::where('added_by', $merchantId)->first();
-
-        return view('pages.dashboard.index', compact('merchant_details'));
+        if($merchant_details){
+            return view('pages.dashboard.index', compact('merchant_details'));
+        }else{
+            return redirect()->route('create.merchants.kfc');
+        }
     }
 
     public function profile()

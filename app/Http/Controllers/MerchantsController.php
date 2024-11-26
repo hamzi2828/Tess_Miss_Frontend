@@ -375,7 +375,9 @@ class MerchantsController extends Controller
         if (!$merchant_details) {
             return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
-
+        if($merchant_details->declined_by == null){
+            return redirect()->back()->with('error', 'kyc not declined yet.');
+        }
         // if (!auth()->user()->can('changeKYC', auth()->user()))
         // {
         //     return redirect()->back()->with('error', 'You are not authorized.');
