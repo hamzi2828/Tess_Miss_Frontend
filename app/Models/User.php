@@ -113,5 +113,9 @@ class User extends Authenticatable
     }
 
     
-    
+    public static function getUserRoleById($userId)
+    {
+        $user = User::find($userId);
+        return $user ? $user->role : 'N/A';
+    }
 }

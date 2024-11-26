@@ -19,9 +19,23 @@
             <div class="d-flex align-items-end row">
               <div class="col-7">
                 <div class="card-body text-nowrap">
-                  <h5 class="card-title mb-5" style="">Step 1: Completed</h5>
-                  <a href="#" class="btn btn-primary" style="background: rgba(0, 128, 0, 0.78);">Basic Information</a>
-                </div>  
+                  @if($merchant_details)
+                   <h5 class="card-title mb-5" style="">Basic information has been submitted.</h5>
+                  @endif
+                    <h5 class="card-title mb-5" style="">Step 1: Completed</h5>
+                  @if($merchant_details)
+                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary disabled" 
+                    style="background: rgba(0, 128, 0, 0.78); pointer-events: none; opacity: 0.65;" 
+                    aria-disabled="true">Basic Information</a>
+                  @endif
+                  @if(!$merchant_details)
+                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary" 
+                        style="background: rgba(0, 128, 0, 0.78);" disabled>Basic Information</a>
+                   @endif
+                </div> 
+                
+
+                
               </div>
               <div class="col-5 text-center text-sm-left">
                 <div class="card-body pb-0 px-0 px-md-4">

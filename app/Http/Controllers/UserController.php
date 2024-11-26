@@ -8,6 +8,7 @@ use App\Models\UserPermission;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Models\ActivityLog;
+use App\Models\Merchant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,6 +29,15 @@ class UserController extends Controller
         $users = User::with('department')->get();
 
         return view('pages.users.users-list', compact('users'));
+    }
+
+    public function dashboard()
+    {
+        $merchantId = Auth::user()->id;
+        
+        $merchant_details = Merchant::where('added_by', $merchantId)->first();
+
+        return view('pages.dashboard.index', compact('merchant_details'));
     }
 
     public function profile()
@@ -177,8 +187,14 @@ class UserController extends Controller
                 //     return redirect()->route('edit.merchants.services', ['merchant_id' => $merchant_id]);
                 // }
                 if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'approve' || $activityType == 'decline') {
+            
                     $userStage = auth()->user()->getDepartmentStage(auth()->user()->department);
-                    
+                    $userrole = auth()->user()->getUserRoleById(auth()->user()->id);
+
+
+                    if($userrole == 'frontendUser'){
+                        return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+                    }
                     // Determine the route name dynamically based on stage
                     $routeName = $userStage == 1 
                         ? 'edit.merchants.kyc' 
@@ -191,6 +207,7 @@ class UserController extends Controller
                     // Redirect to the appropriate route
                     return redirect()->route($routeName, ['merchant_id' => $merchant_id]);
                 }
+                
 
             }
 

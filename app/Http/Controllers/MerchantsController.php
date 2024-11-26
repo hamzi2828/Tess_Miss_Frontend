@@ -67,6 +67,7 @@ class MerchantsController extends Controller
      */
     public function create_merchants_kfc(Request $request)
     {
+        
         $title = 'Create Merchants KYC';
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
@@ -84,9 +85,9 @@ class MerchantsController extends Controller
             }
         }
 
-        if (!auth()->user()->can('addKYC', auth()->user())) {
-            return redirect()->back()->with('error', 'You are not authorized.');
-        }
+        // if (!auth()->user()->can('addKYC', auth()->user())) {
+        //     return redirect()->back()->with('error', 'You are not authorized.');
+        // }
 
         return view('pages.merchants.create.create-merchants', compact('title', 'MerchantCategory', 'Country'));
     }
@@ -226,7 +227,8 @@ class MerchantsController extends Controller
 
 
          // Redirect with a success message
-         return redirect()->route('merchants.index')->with('success', 'Merchant and Shareholders successfully added.');
+       
+         return redirect()->route('dashboard');
      }
 
 
@@ -362,6 +364,7 @@ class MerchantsController extends Controller
      */
     public function edit_merchants_kyc(Request $request)
     {
+        
         $merchant_id = $request->input('merchant_id');
 
         $title = 'Edit Merchants Details';
@@ -373,12 +376,12 @@ class MerchantsController extends Controller
             return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
 
-        if (auth()->user()->can('changeKYC', auth()->user()))
-        {
-            return view('pages.merchants.edit.edit-merchants', compact('merchant_details', 'title', 'MerchantCategory', 'Country'));
-        }else{
-            return redirect()->back()->with('error', 'You are not authorized.');
-        }
+        // if (!auth()->user()->can('changeKYC', auth()->user()))
+        // {
+        //     return redirect()->back()->with('error', 'You are not authorized.');
+        // }
+        return view('pages.merchants.edit.edit-merchants', compact('merchant_details', 'title', 'MerchantCategory', 'Country'));
+
     }
 
     public function edit_merchants_documents(Request $request)
@@ -518,7 +521,7 @@ class MerchantsController extends Controller
         session()->forget('print_decline_notes');
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Merchant and Shareholders successfully updated.');
+        return redirect()->route('dashboard');
 
     }
 

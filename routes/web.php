@@ -25,10 +25,10 @@ use App\Http\Middleware\CheckUserStage;
 */
 
 
-Route::get('/', function () {
+// Route::get('/', function () {
 
-    return view('pages.dashboard.index');
-})->middleware('auth');
+//     return view('pages.dashboard.index');
+// })->middleware('auth');
 
 
 // Login and Logout routes (these should be outside the auth middleware)
@@ -41,6 +41,7 @@ Route::resource('users', UserController::class);
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
 
+    Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/usersEdit', [UserController::class, 'edit'])->name('users.edit');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::get('/activity-logs', [UserController::class, 'activityLogs'])->name('activity.logs');
@@ -74,7 +75,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Merchant-specific KYC, Documents, Sales, Services
 
-    Route::middleware(['auth', 'checkStage:1'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
         Route::get('/merchantskyc', [MerchantsController::class, 'create_merchants_kfc'])->name('create.merchants.kfc');
         Route::post('/store/merchantskyc', [MerchantsController::class, 'store_merchants_kyc'])->name('store.merchants.kyc');
         Route::get('/editMechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
