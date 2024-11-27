@@ -118,4 +118,18 @@ class User extends Authenticatable
         $user = User::find($userId);
         return $user ? $user->role : 'N/A';
     }
+
+    
+    public static function getUserDetailsById($userId)
+    {
+        $user = User::find($userId);
+        return $user ? [
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'role' => $user->role,
+            'department' => $user->getDepartmentTitle($user->department),
+        ] : [];
+    }
+    
 }

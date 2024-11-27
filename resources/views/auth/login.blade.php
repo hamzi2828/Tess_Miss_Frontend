@@ -192,7 +192,12 @@
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
-        @endif
+            @endif
+            @if (session('error_login'))
+            <div class="alert alert-danger">
+                {{ session('error_login') }}
+            </div>
+            @endif
 
             <h4 class="mb-1">Welcome to Tess! 👋</h4>
 
