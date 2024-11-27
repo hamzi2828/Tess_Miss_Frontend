@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Document;
+use App\Models\MerchantDocument;
+
 
 use App\Services\DocumentsService;
 
@@ -25,6 +27,13 @@ class DocumentsController extends Controller
     
         // Pass the documents to the view
         return view('pages.documents.documents-list', compact('documents'));
+    }
+
+    public function documentHistory()
+    {
+        $documents = MerchantDocument::where('added_by', auth()->id())->get();
+        // Pass the documents to the view
+        return view('pages.documents.documents-history', compact('documents'));
     }
     
     /**

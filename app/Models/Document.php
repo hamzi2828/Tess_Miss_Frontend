@@ -32,4 +32,12 @@ class Document extends Model
        {
            return $this->hasMany(MerchantDocument::class, 'previous_doc_id');
        }
+
+       
+       // Get document title by id
+       public static function getDocumentTitleById($id)
+       {
+           return Document::findOrFail($id)->title;
+       }
+
 }

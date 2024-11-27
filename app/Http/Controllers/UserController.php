@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $merchantId = Auth::user()->id;
         
-        $merchant_details = Merchant::with('documents')->where('added_by', $merchantId)->first();
+        $merchant_details = Merchant::with('documents', 'sales', 'services')->where('added_by', $merchantId)->first();
         if($merchant_details){
             return view('pages.dashboard.index', compact('merchant_details'));
         }else{

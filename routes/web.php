@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('departments', DepartmentController::class);
     Route::resource('documents', DocumentsController::class);
     route::get('/alldocuments',[DocumentsController::class, 'index'] )->name('alldocuments.index');
+    Route::get('/documentHistory',[DocumentsController::class, 'documentHistory'] )->name('document.history');
 
     Route::resource('services', ServicesController::class);
 
