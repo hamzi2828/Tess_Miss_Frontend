@@ -69,6 +69,19 @@
                 <textarea class="form-control" id="companyAddress" name="company_address" rows="3" required>{{ old('company_address') }}</textarea>
             </div>
         
+
+            <div class="mb-3">
+                <label for="operatingCountries" class="form-label">Operating Countries <span class="required-asterisk">*</span></label>
+                <select class="form-select select2" id="operatingCountries" name="operating_countries[]" multiple required>
+                    @foreach($Country as $country)
+                        <option value="{{ $country->id }}" 
+                            {{ in_array($country->id, $merchant_details['operating_countries'] ?? []) ? 'selected' : '' }}>
+                            {{ $country->country_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="mobileNumber" class="form-label">Mobile Number <span class="required-asterisk">*</span></label>
@@ -178,24 +191,39 @@
             <!-- Container for all shareholders -->
             <div id="shareholders-container">
                 <div class="shareholder-entry row mb-3">
-                    <div class="col-md-4">
-                        <label for="shareholderName" class="form-label">Shareholder Name <span class="required-asterisk">*</span></label>
-                        <input type="text" class="form-control" name="shareholderName[]" required>
+                    <div class="col-md-2">
+                        <label for="shareholderFirstName" class="form-label">First Name <span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" name="shareholderFirstName[]" required>
                     </div>
-                    <div class="col-md-4">
-                        <label for="shareholderNationality" class="form-label">Shareholder Nationality <span class="required-asterisk">*</span></label>
-                        <select class="form-select select2" id="shareholderNationality" name="shareholderNationality[]" required>
-                       
+                    <div class="col-md-2" style="max-width: 150px">
+                        <label for="shareholderMiddleName" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" name="shareholderMiddleName[]">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="shareholderLastName" class="form-label">Last Name <span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" name="shareholderLastName[]" required>
+                    </div>
+                    <div class="col-md-2" style="max-width: 160px">
+                        <label for="shareholderDOB" class="form-label">Date of Birth <span class="required-asterisk">*</span></label>
+                        <input type="date" class="form-control" name="shareholderDOB[]" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="shareholderNationality" class="form-label">Nationality <span class="required-asterisk">*</span></label>
+                        <select class="form-select select2" name="shareholderNationality[]" required>
                             <option selected>Select Country</option>
-                            @foreach($Country as $country) <!-- Loop through each country -->
-                                <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option> <!-- Use array syntax to access country fields -->
+                            @foreach($Country as $country)
+                                <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option>
                             @endforeach
                         </select>
                     </div>
-                    
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <label for="shareholderID" class="form-label">Shareholder QID</label>
                         <input type="text" class="form-control" name="shareholderID[]">
+                    </div>
+                    <div class="col-md-1">
+                        <a class="remove-btn">
+                            <i class="ti ti-trash" style="margin-top: 30px;"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -205,6 +233,7 @@
                 <button type="button" id="add-shareholder-btn" class="btn btn-success">+ Add Shareholder</button>
             </div>
         </div>
+
 
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">Save & Proceed</button>
@@ -226,62 +255,79 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // JavaScript to handle the Add Shareholder functionality
-  // JavaScript to handle the Add Shareholder functionality
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('add-shareholder-btn').addEventListener('click', function() {
-        const shareholdersContainer = document.getElementById('shareholders-container');
-        
-        // Create new shareholder input group
-        const newShareholder = document.createElement('div');
-        newShareholder.classList.add('shareholder-entry', 'row', 'mb-3');
-        
-        newShareholder.innerHTML = `
-            <div class="col-md-4">
-                <label for="shareholderName" class="form-label">Shareholder Name *</label>
-                <input type="text" class="form-control" name="shareholderName[]" required>
-            </div>
-            <div class="col-md-4">
-                <label for="shareholderNationality" class="form-label">Shareholder Nationality <span class="required-asterisk">*</span></label>
-                <select class="form-select select2" name="shareholderNationality[]" required>
-                    <option selected>Select Country</option>
-                    @foreach($Country as $country)
-                        <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option>
-                    @endforeach
-                </select>
-            </div>
-             <div class="col-md-3">
-                <label for="shareholderID" class="form-label">Shareholder QID</label>
-                <input type="text" class="form-control" name="shareholderID[]">
-            </div>
-            <div class="col-md-1">
-                <a  class="remove-btn" >
-                   
-                 <i class="ti ti-trash" style="margin-top: 30px"></i>
-                </a>
-            </div>
-        `;
-        
-        // Append the new shareholder entry to the container
-        shareholdersContainer.appendChild(newShareholder);
-        
-        // Reinitialize Select2 on the newly added select element
-        $(newShareholder).find('.select2').select2({
-            placeholder: 'Select Country',
-            allowClear: true
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to dynamically add new Shareholders
+        document.getElementById('add-shareholder-btn').addEventListener('click', function() {
+            const shareholdersContainer = document.getElementById('shareholders-container');
+
+            // Create new shareholder input group
+            const newShareholder = document.createElement('div');
+            newShareholder.classList.add('shareholder-entry', 'row', 'mb-3');
+
+            newShareholder.innerHTML = `
+                <div class="col-md-2">
+                    <label for="shareholderFirstName" class="form-label">First Name *</label>
+                    <input type="text" class="form-control" name="shareholderFirstName[]" required>
+                </div>
+                <div class="col-md-2" style="max-width: 150px">
+                    <label for="shareholderMiddleName" class="form-label">Middle Name</label>
+                    <input type="text" class="form-control" name="shareholderMiddleName[]">
+                </div>
+                <div class="col-md-2">
+                    <label for="shareholderLastName" class="form-label">Last Name *</label>
+                    <input type="text" class="form-control" name="shareholderLastName[]" required>
+                </div>
+                <div class="col-md-2" style="max-width: 160px">
+                    <label for="shareholderDOB" class="form-label">DOB *</label>
+                    <input type="date" class="form-control" name="shareholderDOB[]" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="shareholderNationality" class="form-label">Nationality *</label>
+                    <select class="form-select select2" name="shareholderNationality[]" required>
+                        <option selected>Select Country</option>
+                        @foreach($Country as $country)
+                            <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="shareholderID" class="form-label">Shareholder QID</label>
+                    <input type="text" class="form-control" name="shareholderID[]">
+                </div>
+                <div class="col-md-1">
+                    <a class="remove-btn">
+                        <i class="ti ti-trash" style="margin-top: 30px;"></i>
+                    </a>
+                </div>
+            `;
+
+            // Append the new shareholder entry to the container
+            shareholdersContainer.appendChild(newShareholder);
+
+            // Reinitialize Select2 for newly added selects
+            $(newShareholder).find('.select2').select2({
+                placeholder: 'Select Country',
+                allowClear: true,
+            });
+
+            // Add functionality to remove the newly added shareholder
+            newShareholder.querySelector('.remove-btn').addEventListener('click', function() {
+                shareholdersContainer.removeChild(newShareholder);
+            });
         });
-        
-        // Add functionality to remove the newly added shareholder
-        newShareholder.querySelector('.remove-btn').addEventListener('click', function() {
-            shareholdersContainer.removeChild(newShareholder);
+
+        // Reinitialize Select2 for existing selects
+        $('#operatingCountries, .select2').select2({
+            placeholder: 'Select Country',
+            allowClear: true,
+        });
+
+        // Handle today's date for DOB fields
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelectorAll('input[type="date"]').forEach(function(dateInput) {
+            dateInput.setAttribute('max', today); // Restrict DOB to not exceed today
         });
     });
 
-    // Initialize Select2 on the initial page load for existing selects
-    $('#companyActivities, #shareholderNationality').select2({
-        placeholder: 'Select Country',
-        allowClear: true
-    });
-});
 
 </script>

@@ -60,5 +60,9 @@ class MerchantDocument extends Model
     {
         return $this->belongsTo(DocumentType::class, 'document_type');
     }
+    public function isExpired()
+    {
+        return $this->date_expiry && now()->greaterThan($this->date_expiry);
+    }
 
 }

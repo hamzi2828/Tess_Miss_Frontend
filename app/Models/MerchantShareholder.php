@@ -12,8 +12,12 @@ class MerchantShareholder extends Model
     protected $table = 'merchant_shareholders';
 
     protected $fillable = [
+        'first_name',
+        'middle_name',
+        'last_name',
+        'dob',
         'title',
-        'country', // This should reference the country ID
+        'country', 
         'qid',
         'merchant_id',
         'added_by',

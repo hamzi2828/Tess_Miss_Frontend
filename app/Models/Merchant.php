@@ -99,6 +99,10 @@ class Merchant extends Model
     {
         return $this->belongsTo(User::class, 'declined_by');
     }
-
+    public function operating_countries()
+    {
+        return $this->belongsToMany(Country::class, 'merchant_operating_countries', 'merchant_id', 'country_id');
+    }
+    
 
 }
