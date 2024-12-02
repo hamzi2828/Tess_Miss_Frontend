@@ -204,7 +204,7 @@
                         <input type="text" class="form-control" name="shareholderLastName[]" required>
                     </div>
                     <div class="col-md-2" style="max-width: 160px">
-                        <label for="shareholderDOB" class="form-label">Date of Birth <span class="required-asterisk">*</span></label>
+                        <label for="shareholderDOB" class="form-label">DOB <span class="required-asterisk">*</span></label>
                         <input type="date" class="form-control" name="shareholderDOB[]" required>
                     </div>
                     <div class="col-md-2">
@@ -217,7 +217,8 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label for="shareholderID" class="form-label">Shareholder QID</label>
+                        <label for="shareholderID" class="form-label">Shareholder QID / National ID / Passport
+                        </label>
                         <input type="text" class="form-control" name="shareholderID[]">
                     </div>
                     <div class="col-md-1">
@@ -291,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label for="shareholderID" class="form-label">Shareholder QID</label>
+                    <label for="shareholderID" class="form-label">Shareholder QID / National ID / Passport </label>
                     <input type="text" class="form-control" name="shareholderID[]">
                 </div>
                 <div class="col-md-1">

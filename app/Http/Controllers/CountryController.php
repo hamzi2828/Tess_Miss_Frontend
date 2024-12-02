@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Country;
+use App\Models\FatfCountry;
 
 class CountryController extends Controller
 {
@@ -27,6 +28,7 @@ class CountryController extends Controller
     {
         //
     }
+    
 
     /**
      * Store a newly created resource in storage.
