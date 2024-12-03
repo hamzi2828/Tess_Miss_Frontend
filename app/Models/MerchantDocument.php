@@ -65,4 +65,12 @@ class MerchantDocument extends Model
         return $this->date_expiry && now()->greaterThan($this->date_expiry);
     }
 
+    public static function getOriginalDocumentTitle($previousDocId)
+    {
+        // Retrieve the document using the previous_doc_id
+        $document = self::find($previousDocId);
+
+        // Return the title of the original document or null if not found
+        return $document ? $document->title : null;
+    }
 }

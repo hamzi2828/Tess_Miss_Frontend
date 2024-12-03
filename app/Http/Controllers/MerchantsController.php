@@ -385,6 +385,7 @@ class MerchantsController extends Controller
         $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents', 'operating_countries'])->where('id', $merchant_id)->first();
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
+        
          
         if (!$merchant_details) {
             return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);

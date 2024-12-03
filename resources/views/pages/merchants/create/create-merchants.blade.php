@@ -191,23 +191,23 @@
             <!-- Container for all shareholders -->
             <div id="shareholders-container">
                 <div class="shareholder-entry row mb-3">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="shareholderFirstName" class="form-label">First Name <span class="required-asterisk">*</span></label>
                         <input type="text" class="form-control" name="shareholderFirstName[]" required>
                     </div>
-                    <div class="col-md-2" style="max-width: 150px">
+                    <div class="col-md-3">
                         <label for="shareholderMiddleName" class="form-label">Middle Name</label>
                         <input type="text" class="form-control" name="shareholderMiddleName[]">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="shareholderLastName" class="form-label">Last Name <span class="required-asterisk">*</span></label>
                         <input type="text" class="form-control" name="shareholderLastName[]" required>
                     </div>
-                    <div class="col-md-2" style="max-width: 160px">
+                    <div class="col-md-3" style="max-width: 160px">
                         <label for="shareholderDOB" class="form-label">DOB <span class="required-asterisk">*</span></label>
                         <input type="date" class="form-control" name="shareholderDOB[]" required>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="shareholderNationality" class="form-label">Nationality <span class="required-asterisk">*</span></label>
                         <select class="form-select select2" name="shareholderNationality[]" required>
                             <option selected>Select Country</option>

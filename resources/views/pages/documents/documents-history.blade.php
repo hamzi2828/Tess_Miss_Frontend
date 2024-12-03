@@ -39,21 +39,38 @@
                     
                         <td>
                             @foreach($documents as $document)
+                            @php
+                                
+                                $titleParts = explode('_', $document->title);
+                                $documentId = $titleParts[0] ?? null;
+                                $shareholder = $titleParts[1] ?? ''; 
+                                $documentModel = $documentId ? \App\Models\Document::find($documentId) : null;
+                                $documentModelreplace = $shareholder ? \App\Models\MerchantDocument::where('id', $shareholder)->first() : null;
+                            @endphp
+                                  <br>
+                            {{ $documentModel ? $documentModel->title : '' }}
+                      
+                            @if ($documentModelreplace)
                                 @php
-                                    $titleParts = explode('_', $document->title);
-                                    $documentId = $titleParts[0] ?? null;
-                                    $shareholder = $titleParts[1] ?? ''; // Safely access the second part
-                                    $documentModel = $documentId ? \App\Models\Document::find($documentId) : null; // Check if $documentId exists
+
+                                $titleParts = explode('_', $documentModelreplace->title);
+                                $documentId = $titleParts[0] ?? null;
+                                $shareholder = $titleParts[1] ?? ''; 
                                 @endphp
-                                {{ $documentModel ? $documentModel->title : 'N/A' }}
-                                @if ($documentModel && $documentModel->title === 'QID' && $shareholder)
-                                    for {{ $shareholder }}
-                                @endif
-                                <br>
-                                @if(!$document->approved_by)
-                                    @php $allApproved = false; @endphp
-                                @endif
-                            @endforeach
+    
+                                <p><strong>Replacement of :</strong> {{$shareholder  }}</p>
+                              @endif
+                        
+                            @if ($documentModel && $documentModel->title === 'QID' && $shareholder)
+                                for {{ $shareholder }}
+                            @endif
+                        
+                            @if(!$document->approved_by)
+                                @php $allApproved = false; @endphp
+                            @endif
+                        @endforeach
+                        
+                        
                         </td>
                     
                         <td>

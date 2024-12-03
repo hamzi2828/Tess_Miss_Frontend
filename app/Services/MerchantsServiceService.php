@@ -28,119 +28,120 @@ class MerchantsServiceService
     // }
     
     public function getAllMerchants($merchantId = null): array 
-        {
-            // Build the query with eager loading for related data
-            $query = Merchant::with([
-                'sales.addedBy', 
-                'sales.approvedBy', 
-                'sales.declinedBy',
-                'services.addedBy', 
-                'services.approvedBy', 
-                'services.declinedBy',
-                'shareholders', 
-                'documents.addedBy', 
-                'documents.approvedBy',
-                'documents.declinedBy',
-                'addedBy', 
-                'approvedBy',
-                'declinedBy'
-            ]);
+    {
+        // Build the query with eager loading for related data
+        $query = Merchant::with([
+            'sales.addedBy', 
+            'sales.approvedBy', 
+            'sales.declinedBy',
+            'services.addedBy', 
+            'services.approvedBy', 
+            'services.declinedBy',
+            'shareholders', 
+            'documents.addedBy', 
+            'documents.approvedBy',
+            'documents.declinedBy',
+            'addedBy', 
+            'approvedBy',
+            'declinedBy'
+        ]);
 
-            // Apply filtering if merchantId is provided
-            if ($merchantId) {
-                $query->where('id', $merchantId);
-            }
-
-            // dd($query->get()->toArray());
-            // Fetch the data and convert to array
-            return $query->get()->toArray();
+        // Apply filtering if merchantId is provided
+        if ($merchantId) {
+            $query->where('id', $merchantId);
         }
 
- 
-        public function createMerchants(array $data): Merchant
-        {
-            $merchant = new Merchant();
-            $merchant->merchant_name = $data['merchant_name'];
-            $merchant->merchant_name_ar = $data['merchant_arabic_name'];
-            $merchant->comm_reg_no = $data['company_registration'];
-            $merchant->address = $data['company_address'];
-            $merchant->merchant_mobile = $data['mobile_number'];
-            $merchant->merchant_category = $data['company_activities'];
-            $merchant->merchant_landline = $data['landline_number'];
-            $merchant->merchant_url = $data['website'];
-            $merchant->merchant_email = $data['email'];
-            $merchant->website_month_visit = $data['monthly_website_visitors'];
-            $merchant->contact_person_name = $data['key_point_of_contact'];
-            $merchant->website_month_active = $data['monthly_active_users'];
-            $merchant->contact_person_mobile = $data['key_point_mobile'];
-            $merchant->website_month_volume = $data['monthly_avg_volume'];
-            $merchant->merchant_previous_bank = $data['existing_banking_partner'];
-            $merchant->website_month_transaction = $data['monthly_avg_transactions'];
-            $merchant->merchant_date_incorp = $data['date_of_incorporation'];
-            $merchant->added_by = Auth::user()->id;
-            $merchant->save();
-        
-            // Save operational countries
-            if (isset($data['operating_countries'])) {
-                $merchant->operating_countries()->sync($data['operating_countries']);
-            }
-        
-            // Handle Shareholders
-            $this->createShareholders($merchant, $data);
-        
-            return $merchant;
+        // dd($query->get()->toArray());
+        // Fetch the data and convert to array
+        return $query->get()->toArray();
+    }
+
+
+    public function createMerchants(array $data): Merchant
+    {
+        $merchant = new Merchant();
+        $merchant->merchant_name = $data['merchant_name'];
+        $merchant->merchant_name_ar = $data['merchant_arabic_name'];
+        $merchant->comm_reg_no = $data['company_registration'];
+        $merchant->address = $data['company_address'];
+        $merchant->merchant_mobile = $data['mobile_number'];
+        $merchant->merchant_category = $data['company_activities'];
+        $merchant->merchant_landline = $data['landline_number'];
+        $merchant->merchant_url = $data['website'];
+        $merchant->merchant_email = $data['email'];
+        $merchant->website_month_visit = $data['monthly_website_visitors'];
+        $merchant->contact_person_name = $data['key_point_of_contact'];
+        $merchant->website_month_active = $data['monthly_active_users'];
+        $merchant->contact_person_mobile = $data['key_point_mobile'];
+        $merchant->website_month_volume = $data['monthly_avg_volume'];
+        $merchant->merchant_previous_bank = $data['existing_banking_partner'];
+        $merchant->website_month_transaction = $data['monthly_avg_transactions'];
+        $merchant->merchant_date_incorp = $data['date_of_incorporation'];
+        $merchant->added_by = Auth::user()->id;
+        $merchant->save();
+    
+        // Save operational countries
+        if (isset($data['operating_countries'])) {
+            $merchant->operating_countries()->sync($data['operating_countries']);
         }
-        
-        
+    
+        // Handle Shareholders
+        $this->createShareholders($merchant, $data);
+    
+        return $merchant;
+    }
+    
+    
 
-  
-        protected function createShareholders(Merchant $merchant, array $data): void
-        {
-            $firstNames = $data['shareholderFirstName'];
-            $middleNames = $data['shareholderMiddleName'] ?? [];
-            $lastNames = $data['shareholderLastName'];
-            $dobs = $data['shareholderDOB'];
-            $nationalities = $data['shareholderNationality'];
-            $qids = $data['shareholderID'];
 
-            foreach ($firstNames as $index => $firstName) {
-                $shareholder = new MerchantShareholder();
-                $shareholder->merchant_id = $merchant->id;
-                $shareholder->first_name = $firstName;
-                $shareholder->middle_name = $middleNames[$index] ?? null;
-                $shareholder->last_name = $lastNames[$index];
-                $shareholder->dob = $dobs[$index];
-                $shareholder->country_id = $nationalities[$index];
-                $shareholder->qid = $qids[$index] ?? null;
-                $shareholder->added_by = Auth::user()->id ?? 1;
-                $shareholder->status = 'active';
+    protected function createShareholders(Merchant $merchant, array $data): void
+    {
+        $firstNames = $data['shareholderFirstName'];
+        $middleNames = $data['shareholderMiddleName'] ?? [];
+        $lastNames = $data['shareholderLastName'];
+        $dobs = $data['shareholderDOB'];
+        $nationalities = $data['shareholderNationality'];
+        $qids = $data['shareholderID'];
 
-                // Combine first_name and last_name for the title
-                $shareholder->title = $firstName . ' ' . $lastNames[$index];
+        foreach ($firstNames as $index => $firstName) {
+            $shareholder = new MerchantShareholder();
+            $shareholder->merchant_id = $merchant->id;
+            $shareholder->first_name = $firstName;
+            $shareholder->middle_name = $middleNames[$index] ?? null;
+            $shareholder->last_name = $lastNames[$index];
+            $shareholder->dob = $dobs[$index];
+            $shareholder->country_id = $nationalities[$index];
+            $shareholder->qid = $qids[$index] ?? null;
+            $shareholder->added_by = Auth::user()->id ?? 1;
+            $shareholder->status = 'active';
 
-                $shareholder->save();
-            }
+            // Combine first_name and last_name for the title
+            $shareholder->title = $firstName . ' ' . $lastNames[$index];
+
+            $shareholder->save();
         }
+    }
 
 
 
+    
     public function storeMerchantsSales(array $data, int $merchant_id): MerchantSale
     {
         $merchant_id = $merchant_id;  // Example merchant ID, replace with dynamic value if needed
-     
-         // Step 2: Create a new MerchantSale record using validated data
-         $merchantSale = new MerchantSale();
-         $merchantSale->merchant_id = $merchant_id;
-         $merchantSale->min_transaction_amount = $data['minTransactionAmount'];
-         $merchantSale->max_transaction_amount = $data['maxTransactionAmount'];
-         $merchantSale->daily_limit_amount = $data['dailyLimitAmount'];
-         $merchantSale->monthly_limit_amount = $data['monthlyLimitAmount'];
-         $merchantSale->max_transaction_count = $data['maxTransactionCount'];
-         $merchantSale->added_by = auth()->user()->id ?? 1;  // Use the authenticated user, default to 1 if not available
-     
-         // Save the merchant sale record
-         $merchantSale->save();
-         return $merchantSale;
+    
+        // Step 2: Create a new MerchantSale record using validated data
+        $merchantSale = new MerchantSale();
+        $merchantSale->merchant_id = $merchant_id;
+        $merchantSale->min_transaction_amount = $data['minTransactionAmount'];
+        $merchantSale->max_transaction_amount = $data['maxTransactionAmount'];
+        $merchantSale->daily_limit_amount = $data['dailyLimitAmount'];
+        $merchantSale->monthly_limit_amount = $data['monthlyLimitAmount'];
+        $merchantSale->max_transaction_count = $data['maxTransactionCount'];
+        $merchantSale->added_by = auth()->user()->id ?? 1;  // Use the authenticated user, default to 1 if not available
+    
+        // Save the merchant sale record
+        $merchantSale->save();
+        return $merchantSale;
 
     }
 
@@ -284,6 +285,11 @@ class MerchantsServiceService
     {
         Merchant::destroy($merchant_id);
     }
+
+
+
+
+ 
 
 
 }
