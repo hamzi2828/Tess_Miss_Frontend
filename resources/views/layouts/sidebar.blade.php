@@ -41,14 +41,14 @@
 
 
       <li class="menu-item ">
-        <a href="#" class="menu-link">
+        <a href="{{ route('faqs.index') }}"  class="menu-link">
           <i class="menu-icon tf-icons ti ti-components"></i>
           <div data-i18n="FAQs">FAQs</div>
         </a>
       </li>
 
 
- 
+
 
 
 
@@ -57,8 +57,8 @@
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons ti ti-components"></i>
             <div data-i18n="Merchants">Merchants</div>
-        </a> 
-      
+        </a>
+
         <ul class="menu-sub">
             <li class="menu-item {{ request()->routeIs('merchants.index') ? 'active' : '' }}">
                 <a href="{{ route('merchants.index') }}" class="menu-link">
@@ -71,16 +71,16 @@
                 </a>
             </li> --}}
         </ul>
-       
+
       </li>
       @endcanany
 
     @canany(['toggleCountriesSection', 'toggleDepartmentsSection', 'toggleDocumentsSection', 'toggleMerchantCategoriesSection', 'toggleActivityLogsSection'], App\Models\User::class)
     <li class="menu-header small text-uppercase text-muted fw-bold">Settings</li>
     @endcanany
-    
+
     @can('toggleCountriesSection', App\Models\User::class)
- 
+
     <li class="menu-item {{ request()->routeIs('countries.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-world"></i>
@@ -97,9 +97,9 @@
       </ul>
     </li>
     @endcan
-    
 
-    
+
+
 
     @can('toggleDepartmentsSection', App\Models\User::class)
 
@@ -120,7 +120,7 @@
         @endcan
       </ul>
     </li>
-    
+
     @endcan
 
 
@@ -141,12 +141,12 @@
       </ul>
     </li>
     @endcan
-    
+
     @can('toggleMerchantCategoriesSection', App\Models\User::class)
     <li class="menu-item {{ request()->routeIs('merchant-categories.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-color-swatch"></i>
-        
+
         <div data-i18n="Merchant-Categories">Merchant Categories</div>
       </a>
       @can('viewMerchantCategories', App\Models\User::class)
@@ -178,7 +178,7 @@
       @endcan
     </li>
     @endcan
-    
+
 
 
 
@@ -207,8 +207,8 @@
         </ul>
     </li>
     @endcan
-    
-    
+
+
 
     @can('toggleUsersSection', App\Models\User::class)
     <li class="menu-header small text-uppercase text-muted fw-bold">User Management</li>
@@ -218,7 +218,7 @@
         <div data-i18n="Users">Users</div>
       </a>
       <ul class="menu-sub">
-      
+
         @can('viewUsers', App\Models\User::class)
         <li class="menu-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
           <a href="{{ route('users.index') }}" class="menu-link">
@@ -226,7 +226,7 @@
           </a>
         </li>
         @endcan
-    
+
 
        {{-- @can('addUser', App\Models\User::class)
         <li class="menu-item {{ request()->routeIs('users.create') ? 'active' : '' }}">
@@ -235,7 +235,7 @@
           </a>
         </li>
         @endcan --}}
- 
+
       </ul>
     </li>
     @endcan

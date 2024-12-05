@@ -10,6 +10,7 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\MerchantCategoriesController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\MerchantsController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\CheckUserStage;
 
@@ -37,7 +38,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/usersCreate', [UserController::class, 'showRegistrationForm'])->name('users.register');
 Route::resource('users', UserController::class);
- 
+
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
 
@@ -49,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications/read/{id}', [UserController::class, 'markAsRead'])->name('notifications.read');
     Route::get('/notifications/mark-all', [UserController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
     Route::get('/notifications/latest', [UserController::class, 'getLatestNotifications'])->name('notifications.latest');
+    Route::resource('faqs', FaqController::class);
 
 
 
