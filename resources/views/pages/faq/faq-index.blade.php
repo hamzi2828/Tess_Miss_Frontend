@@ -76,7 +76,7 @@
                       <h5 class="mb-0">
                         <span class="align-middle">FAQ</span>
                       </h5>
-                      {{-- <span>Get help with payment</span> --}}
+                      <span>Frequently Asked Questions</span>
                     </div>
                   </div>
                   <div id="accordionPayment" class="accordion">
