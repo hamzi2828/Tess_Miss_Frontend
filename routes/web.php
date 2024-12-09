@@ -12,6 +12,8 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\MerchantsController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PageController;
+
 use App\Http\Middleware\CheckUserStage;
 
 /*
@@ -71,6 +73,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/merchantsPreview}', [MerchantsController::class, 'preview'])->name('merchants.preview');
     Route::post('/merchants/{id}/approve', [MerchantsController::class, 'approve_merchants'])->name('merchants.approve');
     Route::post('/merchants/{id}/decline', [MerchantsController::class, 'decline_merchants'])->name('merchants.decline');
+
+
+
+    Route::resource('pages', PageController::class);
+    Route::get('/pagesCreate', [PageController::class, 'create'])->name('pages.create');
+    Route::get('/{slug}', [PageController::class, 'show'])->name('pages.show');
+
+
 
 
 });

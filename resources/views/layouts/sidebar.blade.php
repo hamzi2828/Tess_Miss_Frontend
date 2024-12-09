@@ -48,6 +48,22 @@
       </li>
 
 
+      <li class="menu-item {{ Request::is('pages/*') ? 'open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons ti ti-components"></i>
+            <div data-i18n="Pages">Pages</div>
+        </a>
+
+        <ul class="menu-sub">
+            @foreach(App\Models\Page::where('status', 'active')->get() as $page)
+                <li class="menu-item {{ request()->routeIs('pages.show') && request()->segment(2) == $page->slug ? 'active' : '' }}">
+                    <a href="{{ route('pages.show', $page->slug) }}" class="menu-link">
+                        <div data-i18n="{{ $page->id }}">{{ $page->name }}</div>
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    </li>
 
 
 
