@@ -16,32 +16,32 @@
         <h3 class="fw-bold">Profile Status</h3>
 
         <div class="col-xl-4">
-          <div class="card">
+          <div class="card h-100">
             <div class="d-flex align-items-end row">
-              
+
               <div class="col-7">
                 <div class="card-body text-nowrap">
-                 
-                   <h5 class="card-title mb-5" style="">Basic Information </h5>
-                 
+
+                  <h5 class="card-title mb-5" style="font-weight: bold;">Basic Information </h5>
+
                   @if($merchant_details->approved_by)
                     <h5 class="card-title mb-5" style="">Step 1: Completed</h5>
                   @else
                     <h5 class="card-title mb-5" style="">Step 1: Pending Approval</h5>
                   @endif
                   @if($merchant_details)
-                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary disabled" 
-                    style="background: #666; pointer-events: none; opacity: 0.65;" 
+                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary disabled"
+                    style="background: #666; pointer-events: none; opacity: 0.65;"
                     aria-disabled="true">Basic Information</a>
                   @endif
                   @if(!$merchant_details)
-                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary" 
+                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary"
                         style="background: rgba(0, 128, 0, 0.78);" disabled>Basic Information</a>
                    @endif
-                </div> 
-                
+                </div>
 
-                
+
+
               </div>
               <div class="col-5 text-center text-sm-left">
                 <div class="card-body pb-5 px-0 px-md-4">
@@ -56,15 +56,15 @@
         </div>
 
 
-       
+
         <div class="col-xl-4">
-          <div class="card">
+          <div class="card h-100">
             <div class="d-flex align-items-end row">
               <div class="col-7">
                 <div class="card-body text-nowrap">
-               
-                  <h5 class="card-title mb-5" style="">Documents Upload.</h5>
-              
+
+                  <h5 class="card-title mb-5" style="font-weight: bold;">Documents Upload</h5>
+
                   @if(!$merchant_details->documents)
                   <h5 class="card-title mb-5" style="">Documents required to complete the profile.</h5>
                  @endif
@@ -73,24 +73,24 @@
                           return !is_null($document->approved_by);
                       });
                   @endphp
-                  
+
                   @if($allDocumentsApproved)
                       <h5 class="card-title mb-5" style="">Step 2: Completed</h5>
                   @else
                       <h5 class="card-title mb-5" style="">Step 2: Pending Approval</h5>
-                  @endif   
+                  @endif
 
 
                   @if($merchant_details->documents)
-                  <a href="{{ route('create.merchants.documents') }}" class="btn btn-warning disabled" 
-                  style="background: #FFCD69; pointer-events: none; opacity: 0.65;" 
+                  <a href="{{ route('create.merchants.documents') }}" class="btn btn-warning disabled"
+                  style="background: #FFCD69; pointer-events: none; opacity: 0.65;"
                   aria-disabled="true">Upload Documents</a>
                   @else
-                  <a href="{{ route('create.merchants.documents') }}" class="btn btn-warning" 
+                  <a href="{{ route('create.merchants.documents') }}" class="btn btn-warning"
                       style="background: #FFCD69;">Upload Documents</a>
                   @endif
 
-                </div>  
+                </div>
               </div>
               <div class="col-5 text-center text-sm-left">
                 <div class="card-body pb-5 px-0 px-md-4">
@@ -103,22 +103,23 @@
             </div>
           </div>
         </div>
-        
+
         <div class="col-xl-4">
-          <div class="card">
+          <div class="card h-100">
             <div class="d-flex align-items-end row">
               <div class="col-7">
-                <div class="card-body text-nowrap">
-                  <h5 class="card-title mb-5" style="">Account Verification.</h5>
-                  
+                <div class="card-body text-nowrap mb-5">
+                  <h5 class="card-title mb-5" style="font-weight: bold;">Account Verification</h5>
+
                   @if($merchant_details->sales->isNotEmpty() && $merchant_details->services->isNotEmpty())
-                  
+
                   <h5 class="card-title mb-5" style="">Step 3: Completed</h5>
                   <a href="#" class="btn btn-success">Account Verified</a>
                   @else
-                  <h5 class="card-title mb-10" style="">Step 3: Approval  Pending </h5>
+                  <h5 class="card-title mb-5" style="">Step 3: Approval  Pending </h5>
                   @endif
-                </div>  
+
+                </div>
               </div>
               <div class="col-5 text-center text-sm-left">
                 <div class="card-body pb-5 px-0 px-md-4">
@@ -131,9 +132,9 @@
             </div>
           </div>
         </div>
-      
+
         <!-- View sales -->
-        
+
         <!-- Statistics -->
         {{-- <div class="col-xl-8 col-md-12">
           <div class="card h-100">
@@ -217,9 +218,9 @@
         </div> --}}
         <!--/ Statistics -->
 
-    
-   
-   
+
+
+
       </div>
     </div>
     <!-- / Content -->
