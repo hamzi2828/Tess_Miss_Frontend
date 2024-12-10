@@ -32,6 +32,8 @@
                                 $i = 1;
                             @endphp
                     
+                    @if($documents->isNotEmpty())
+                        
                     <tr>
                         @php
                             $allApproved = true; // Assume all documents are approved initially
@@ -39,36 +41,36 @@
                     
                         <td>
                             @foreach($documents as $document)
-                            @php
-                                
-                                $titleParts = explode('_', $document->title);
-                                $documentId = $titleParts[0] ?? null;
-                                $shareholder = $titleParts[1] ?? ''; 
-                                $documentModel = $documentId ? \App\Models\Document::find($documentId) : null;
-                                $documentModelreplace = $shareholder ? \App\Models\MerchantDocument::where('id', $shareholder)->first() : null;
-                            @endphp
-                                  <br>
-                            {{ $documentModel ? $documentModel->title : '' }}
-                      
-                            @if ($documentModelreplace)
                                 @php
-
-                                $titleParts = explode('_', $documentModelreplace->title);
-                                $documentId = $titleParts[0] ?? null;
-                                $shareholder = $titleParts[1] ?? ''; 
+                                    
+                                    $titleParts = explode('_', $document->title);
+                                    $documentId = $titleParts[0] ?? null;
+                                    $shareholder = $titleParts[1] ?? ''; 
+                                    $documentModel = $documentId ? \App\Models\Document::find($documentId) : null;
+                                    $documentModelreplace = $shareholder ? \App\Models\MerchantDocument::where('id', $shareholder)->first() : null;
                                 @endphp
-    
-                                <p><strong>Replacement of :</strong> {{$shareholder  }}</p>
-                              @endif
+                                    <br>
+                                {{ $documentModel ? $documentModel->title : '' }}
                         
-                            @if ($documentModel && $documentModel->title === 'QID' && $shareholder)
-                                for {{ $shareholder }}
-                            @endif
-                        
-                            @if(!$document->approved_by)
-                                @php $allApproved = false; @endphp
-                            @endif
-                        @endforeach
+                                @if ($documentModelreplace)
+                                    @php
+
+                                    $titleParts = explode('_', $documentModelreplace->title);
+                                    $documentId = $titleParts[0] ?? null;
+                                    $shareholder = $titleParts[1] ?? ''; 
+                                    @endphp
+        
+                                    <p><strong>Replacement of :</strong> {{$shareholder  }}</p>
+                                @endif
+                            
+                                @if ($documentModel && $documentModel->title === 'QID' && $shareholder)
+                                    for {{ $shareholder }}
+                                @endif
+                            
+                                @if(!$document->approved_by)
+                                    @php $allApproved = false; @endphp
+                                @endif
+                            @endforeach
                         
                         
                         </td>
@@ -107,7 +109,7 @@
                             @endforeach
                         </td>
                     </tr>
-                    
+                    @endif
                           
                         </tbody>
                     </table>
