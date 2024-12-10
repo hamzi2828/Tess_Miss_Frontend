@@ -203,7 +203,7 @@
                         <label for="shareholderLastName" class="form-label">Last Name <span class="required-asterisk">*</span></label>
                         <input type="text" class="form-control" name="shareholderLastName[]" required>
                     </div>
-                    <div class="col-md-3" style="max-width: 160px">
+                    <div class="col-md-3" >
                         <label for="shareholderDOB" class="form-label">DOB <span class="required-asterisk">*</span></label>
                         <input type="date" class="form-control" name="shareholderDOB[]" required>
                     </div>
@@ -256,79 +256,83 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Function to dynamically add new Shareholders
-        document.getElementById('add-shareholder-btn').addEventListener('click', function() {
-            const shareholdersContainer = document.getElementById('shareholders-container');
+document.addEventListener('DOMContentLoaded', function () {
+    const today = new Date().toISOString().split('T')[0];
 
-            // Create new shareholder input group
-            const newShareholder = document.createElement('div');
-            newShareholder.classList.add('shareholder-entry', 'row', 'mb-3');
-
-            newShareholder.innerHTML = `
-                <div class="col-md-3">
-                    <label for="shareholderFirstName" class="form-label">First Name *</label>
-                    <input type="text" class="form-control" name="shareholderFirstName[]" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="shareholderMiddleName" class="form-label">Middle Name</label>
-                    <input type="text" class="form-control" name="shareholderMiddleName[]">
-                </div>
-                <div class="col-md-3">
-                    <label for="shareholderLastName" class="form-label">Last Name *</label>
-                    <input type="text" class="form-control" name="shareholderLastName[]" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="shareholderDOB" class="form-label">DOB *</label>
-                    <input type="date" class="form-control" name="shareholderDOB[]" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="shareholderNationality" class="form-label">Nationality *</label>
-                    <select class="form-select select2" name="shareholderNationality[]" required>
-                        <option selected>Select Country</option>
-                        @foreach($Country as $country)
-                            <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="shareholderID" class="form-label"> QID / National ID / Passport  * </label>
-                    <input type="text" class="form-control" name="shareholderID[]">
-                </div>
-                <div class="col-md-1">
-                    <a class="remove-btn">
-                        <i class="ti ti-trash" style="margin-top: 35px;"></i>
-                    </a>
-                </div>
-            `;
-
-            // Append the new shareholder entry to the container
-            shareholdersContainer.appendChild(newShareholder);
-
-            // Reinitialize Select2 for newly added selects
-            $(newShareholder).find('.select2').select2({
-                placeholder: 'Select Country',
-                allowClear: true,
-            });
-
-            // Add functionality to remove the newly added shareholder
-            newShareholder.querySelector('.remove-btn').addEventListener('click', function() {
-                shareholdersContainer.removeChild(newShareholder);
-            });
+    // Function to apply max attribute to all date inputs
+    function restrictMaxDate() {
+        document.querySelectorAll('input[type="date"]').forEach(function (dateInput) {
+            dateInput.setAttribute('max', today); // Set the max attribute to today's date
         });
+    }
 
-        // Reinitialize Select2 for existing selects
-        $('#operatingCountries, .select2').select2({
-            placeholder: 'Select Country',
-            allowClear: true,
-        });
+    // Initially apply max date restriction to all existing date inputs
+    restrictMaxDate();
 
-        // Handle today's date for DOB fields
-        const today = new Date().toISOString().split('T')[0];
-        document.querySelectorAll('input[type="date"]').forEach(function(dateInput) {
-            dateInput.setAttribute('max', today); // Restrict DOB to not exceed today
+    // Add functionality to dynamically add new Shareholders
+    document.getElementById('add-shareholder-btn').addEventListener('click', function () {
+        const shareholdersContainer = document.getElementById('shareholders-container');
+
+        // Create new shareholder input group
+        const newShareholder = document.createElement('div');
+        newShareholder.classList.add('shareholder-entry', 'row', 'mb-3');
+
+        newShareholder.innerHTML = `
+            <div class="col-md-3">
+                <label for="shareholderFirstName" class="form-label">First Name *</label>
+                <input type="text" class="form-control" name="shareholderFirstName[]" required>
+            </div>
+            <div class="col-md-3">
+                <label for="shareholderMiddleName" class="form-label">Middle Name</label>
+                <input type="text" class="form-control" name="shareholderMiddleName[]">
+            </div>
+            <div class="col-md-3">
+                <label for="shareholderLastName" class="form-label">Last Name *</label>
+                <input type="text" class="form-control" name="shareholderLastName[]" required>
+            </div>
+            <div class="col-md-3">
+                <label for="shareholderDOB" class="form-label">DOB *</label>
+                <input type="date" class="form-control" name="shareholderDOB[]" required>
+            </div>
+            <div class="col-md-3">
+                <label for="shareholderNationality" class="form-label">Nationality *</label>
+                <select class="form-select select2" name="shareholderNationality[]" required>
+                    <option selected>Select Country</option>
+                    @foreach($Country as $country)
+                        <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="shareholderID" class="form-label">QID / National ID / Passport *</label>
+                <input type="text" class="form-control" name="shareholderID[]">
+            </div>
+            <div class="col-md-1">
+                <a class="remove-btn">
+                    <i class="ti ti-trash" style="margin-top: 35px;"></i>
+                </a>
+            </div>
+        `;
+
+        // Append the new shareholder entry to the container
+        shareholdersContainer.appendChild(newShareholder);
+
+        // Apply max date restriction to the newly added date input
+        restrictMaxDate();
+
+        // Add functionality to remove the newly added shareholder
+        newShareholder.querySelector('.remove-btn').addEventListener('click', function () {
+            shareholdersContainer.removeChild(newShareholder);
         });
     });
+
+    // Reapply select2 to newly added selects
+    $('#operatingCountries, .select2').select2({
+        placeholder: 'Select Country',
+        allowClear: true,
+    });
+});
+
 
 
 </script>
