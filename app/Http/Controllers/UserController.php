@@ -201,7 +201,7 @@ class UserController extends Controller
                             return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
 
                         }else{
-                            return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id]);
+                            return redirect()->route('edit.documents', ['merchant_id' => $merchant_id]);
                         }
                     }
                     // Determine the route name dynamically based on stage

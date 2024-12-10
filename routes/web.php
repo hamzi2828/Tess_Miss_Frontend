@@ -46,6 +46,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/MechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
+    Route::get('/test', [MerchantsController::class, 'create_merchants_documents'])->name('edit.documents');
+
+
 
     Route::get('/usersEdit', [UserController::class, 'edit'])->name('users.edit');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');

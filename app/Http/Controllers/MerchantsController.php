@@ -45,6 +45,7 @@ class MerchantsController extends Controller
         return view('pages.merchants.merchants-list', compact('merchants'));
     }
 
+
  
     // Method to preview merchant details
     public function preview(Request $request)
@@ -70,7 +71,12 @@ class MerchantsController extends Controller
      */
     public function create_merchants(Request $request)
     {
-      
+       
+        $merchant = Merchant::where('added_by', auth()->user()->id)->first();
+        if ($merchant) {
+            return redirect()->route('dashboard')->with('error', 'You are already a merchant. Please contact the admin.');
+        }
+    
         
         $title = 'Create Merchants KYC';
         $MerchantCategory = MerchantCategory::all();
