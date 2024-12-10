@@ -19,6 +19,8 @@
     <form class="kyc-form" action="{{ route('update.merchants.kyc',['merchant_id' => request()->merchant_id]) }}" method="POST">
         @csrf
 
+
+        
         <!-- Basic Details Section -->
         <div class="form-section box-container">
 
@@ -60,12 +62,13 @@
                 <select class="form-select select2" id="operatingCountries" name="operating_countries[]" multiple required>
                     @foreach($Country as $country)
                         <option value="{{ $country->id }}" 
-                            {{ in_array($country->id, $merchant_details['operating_countries'] ?? []) ? 'selected' : '' }}>
+                            {{ in_array($country->id, $merchant_details['operating_countries']->pluck('id')->toArray() ?? []) ? 'selected' : '' }}>
                             {{ $country->country_name }}
                         </option>
                     @endforeach
                 </select>
             </div>
+            
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="mobileNumber" class="form-label">Mobile Number <span class="required-asterisk">*</span></label>
@@ -151,24 +154,25 @@
             <!-- Container for all shareholders -->
             <div id="shareholders-container">
                 @foreach($merchant_details['shareholders'] as $shareholder)
+       
                 <div class="shareholder-entry row mb-3">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="shareholderFirstName" class="form-label">First Name <span class="required-asterisk">*</span></label>
                         <input type="text" class="form-control" name="shareholderFirstName[]" value="{{ $shareholder['first_name'] ?? '' }}" required>
                     </div>
-                    <div class="col-md-2" style="max-width: 150px">
+                    <div class="col-md-3">
                         <label for="shareholderMiddleName" class="form-label">Middle Name</label>
                         <input type="text" class="form-control" name="shareholderMiddleName[]" value="{{ $shareholder['middle_name'] ?? '' }}">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="shareholderLastName" class="form-label">Last Name <span class="required-asterisk">*</span></label>
                         <input type="text" class="form-control" name="shareholderLastName[]" value="{{ $shareholder['last_name'] ?? '' }}" required>
                     </div>
-                    <div class="col-md-2" style="max-width: 160px">
+                    <div class="col-md-3">
                         <label for="shareholderDOB" class="form-label">(DOB) <span class="required-asterisk">*</span></label>
                         <input type="date" class="form-control" name="shareholderDOB[]" value="{{ $shareholder['dob'] ?? '' }}" required>
                     </div>
-                    <div class="col-md-2" >
+                    <div class="col-md-3" >
                         <label for="shareholderNationality" class="form-label"> Nationality <span class="required-asterisk">*</span></label>
                         <select class="form-select select2" name="shareholderNationality[]" required>
                             <option selected>Select Country</option>
@@ -177,8 +181,8 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label for="shareholderID" class="form-label">Shareholder QID</label>
+                    <div class="col-md-3">
+                        <label for="shareholderID" class="form-label"> QID / National ID / Passport</label>
                         <input type="text" class="form-control" name="shareholderID[]" value="{{ $shareholder['qid'] }}">
                     </div>
                     <div class="col-md-1">
@@ -186,6 +190,15 @@
                             <i class="ti ti-trash" style="margin-top: 30px"></i>
                         </a>
                     </div>
+
+                    <div class="col-md-1">
+                        @if($shareholder['moi'] == 1)
+                            <div class="col-md-12 mt-7">
+                                <span class="badge bg-danger">Record in MOI</span>
+                            </div>
+                        @endif
+                    </div>
+            
                 </div>
                 @endforeach
             </div>
@@ -197,7 +210,12 @@
             </div>
         </div>
 
+          
+
+
+        
         <div class="d-flex justify-content-end">
+            
             <button type="submit" class="btn btn-primary">Save & Proceed</button>
         </div>
     </form>
@@ -237,23 +255,23 @@ document.addEventListener('DOMContentLoaded', function () {
         newShareholder.classList.add('shareholder-entry', 'row', 'mb-3');
 
         newShareholder.innerHTML = `
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label for="shareholderFirstName" class="form-label">First Name *</label>
                 <input type="text" class="form-control" name="shareholderFirstName[]" required>
             </div>
-            <div class="col-md-2" style="max-width: 150px">
+            <div class="col-md-3">
                 <label for="shareholderMiddleName" class="form-label">Middle Name</label>
                 <input type="text" class="form-control" name="shareholderMiddleName[]">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label for="shareholderLastName" class="form-label">Last Name *</label>
                 <input type="text" class="form-control" name="shareholderLastName[]" required>
             </div>
-            <div class="col-md-2"  style="max-width: 160px">
+            <div class="col-md-3">
                 <label for="shareholderDOB" class="form-label">(DOB) *</label>
                 <input type="date" class="form-control" name="shareholderDOB[]" required>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label for="shareholderNationality" class="form-label"> Nationality *</label>
                 <select class="form-select select2" name="shareholderNationality[]" required>
                     <option selected>Select Country</option>
@@ -262,8 +280,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-2">
-                <label for="shareholderID" class="form-label">Shareholder QID</label>
+            <div class="col-md-3">
+                <label for="shareholderID" class="form-label"> QID / National ID / Passport</label>
                 <input type="text" class="form-control" name="shareholderID[]">
             </div>
             <div class="col-md-1">

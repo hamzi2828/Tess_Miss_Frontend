@@ -261,6 +261,24 @@
                   @enderror
               </div>
           
+              <div class="mb-6 form-password-toggle">
+                  <label class="form-label" for="password_confirmation">Confirm Password</label>
+                  <div class="input-group input-group-merge">
+                      <input
+                          type="password"
+                          id="password_confirmation"
+                          class="form-control @error('password_confirmation') is-invalid @enderror"
+                          name="password_confirmation"
+                          placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                          aria-describedby="password_confirmation"
+                      />
+                      <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                  </div>
+                  @error('password_confirmation')
+                  <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+              </div>
+          
               <div class="mb-6 mt-8">
                   <div class="form-check mb-8 ms-2">
                       <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox" id="terms-conditions" name="terms" {{ old('terms') ? 'checked' : '' }} required />

@@ -42,6 +42,10 @@ class UserController extends Controller
             return redirect()->route('create.merchants.kfc');
         }
     }
+    public function dashboard2()
+    {
+        dd('ia m here');
+    }
 
     public function profile()
     {
@@ -70,7 +74,8 @@ class UserController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
-            'password' => 'required|string|min:5',
+            'password' => 'required|string|min:5|same:password_confirmation',
+            'password_confirmation' => 'required|string|min:5',
             'userEmail' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:20|unique:users,phone',
             'department_id' => 'nullable|exists:departments,id',
@@ -81,6 +86,7 @@ class UserController extends Controller
             'userGender' => 'nullable|in:male,female',
         ]);
 
+        dd($validatedData);
         // Use the UserService to create the user and get the created user object
         $user = $this->userService->createUser($validatedData);
         return redirect()->route('login')->with('success', 'User created successfully. Please log in.');
@@ -198,7 +204,9 @@ class UserController extends Controller
                     if($userrole == 'frontendUser'){
                         $merchant = Merchant::where('id', $merchant_id)->first();
                         if($merchant->approved_by == null){
+                            // return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
                             return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+
                         }else{
                             return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id]);
                         }

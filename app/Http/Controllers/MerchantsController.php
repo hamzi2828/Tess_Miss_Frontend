@@ -45,7 +45,7 @@ class MerchantsController extends Controller
         return view('pages.merchants.merchants-list', compact('merchants'));
     }
 
-
+ 
     // Method to preview merchant details
     public function preview(Request $request)
     {
@@ -377,9 +377,38 @@ class MerchantsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
+
+     public function edit_merchant(Request $request)
+     {
+      
+        $merchant_id = $request->input('merchant_id');
+
+        $title = 'Edit Merchants Details';
+        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents', 'operating_countries'])->where('id', $merchant_id)->first();
+
+        $MerchantCategory = MerchantCategory::all();
+        $Country = Country::all();
+        
+         
+        if (!$merchant_details) {
+            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+        }
+        if($merchant_details->declined_by == null){
+            return redirect()->back()->with('error', 'kyc not declined yet.');
+        }
+        // if (!auth()->user()->can('changeKYC', auth()->user()))
+        // {
+        //     return redirect()->back()->with('error', 'You are not authorized.');
+        // }
+        return view('pages.merchants.edit.edit-merchants', compact('merchant_details', 'title', 'MerchantCategory', 'Country'));
+
+    }
+
+
     public function edit_merchants_kyc(Request $request)
     {
-        
+        dd($request->all());
         $merchant_id = $request->input('merchant_id');
 
         $title = 'Edit Merchants Details';

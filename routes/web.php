@@ -45,6 +45,8 @@ Route::resource('users', UserController::class);
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/MechnatKyc', [MerchantsController::class, 'edit_merchant'])->name('edit.merchants.kyc');
+
     Route::get('/usersEdit', [UserController::class, 'edit'])->name('users.edit');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::get('/activity-logs', [UserController::class, 'activityLogs'])->name('activity.logs');
@@ -84,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 });
+// Route::get('/MechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
 
 
     // Merchant-specific KYC, Documents, Sales, Services
@@ -92,7 +95,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/merchants', [MerchantsController::class, 'create_merchants'])->name('create.merchants.kfc');
         // Route::get('/merchantskyc', [MerchantsController::class, 'create_merchants'])->name('create.merchants.kfc');
         Route::post('/store/merchantskyc', [MerchantsController::class, 'store_merchants_kyc'])->name('store.merchants.kyc');
-        Route::get('/editMechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
         Route::post('/updateMerchantsKyc', [MerchantsController::class, 'update_merchants_kyc'])->name('update.merchants.kyc');
         route::get('/approveKyc',[ MerchantsController::class, 'approveKYC'])->name('approve.merchants.kyc');
         Route::get('/merchants/decline/kyc', [MerchantsController::class, 'declineKYC'])->name('decline.merchants.kyc');
