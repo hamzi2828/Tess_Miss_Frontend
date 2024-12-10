@@ -408,7 +408,7 @@ class MerchantsController extends Controller
 
     public function edit_merchants_kyc(Request $request)
     {
-        dd($request->all());
+      
         $merchant_id = $request->input('merchant_id');
 
         $title = 'Edit Merchants Details';

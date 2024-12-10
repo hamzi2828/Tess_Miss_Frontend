@@ -45,7 +45,7 @@ Route::resource('users', UserController::class);
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');
-    Route::get('/MechnatKyc', [MerchantsController::class, 'edit_merchant'])->name('edit.merchants.kyc');
+    Route::get('/MechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
 
     Route::get('/usersEdit', [UserController::class, 'edit'])->name('users.edit');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
