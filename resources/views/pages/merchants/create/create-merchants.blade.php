@@ -217,13 +217,13 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label for="shareholderID" class="form-label">Shareholder QID / National ID / Passport
+                        <label for="shareholderID" class="form-label"> QID / National ID / Passport  <span class="required-asterisk">*</span>
                         </label>
                         <input type="text" class="form-control" name="shareholderID[]">
                     </div>
                     <div class="col-md-1">
                         <a class="remove-btn">
-                            <i class="ti ti-trash" style="margin-top: 30px;"></i>
+                            <i class="ti ti-trash" style="margin-top: 35px;"></i>
                         </a>
                     </div>
                 </div>
@@ -266,23 +266,23 @@ document.addEventListener('DOMContentLoaded', function() {
             newShareholder.classList.add('shareholder-entry', 'row', 'mb-3');
 
             newShareholder.innerHTML = `
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="shareholderFirstName" class="form-label">First Name *</label>
                     <input type="text" class="form-control" name="shareholderFirstName[]" required>
                 </div>
-                <div class="col-md-2" style="max-width: 150px">
+                <div class="col-md-3">
                     <label for="shareholderMiddleName" class="form-label">Middle Name</label>
                     <input type="text" class="form-control" name="shareholderMiddleName[]">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="shareholderLastName" class="form-label">Last Name *</label>
                     <input type="text" class="form-control" name="shareholderLastName[]" required>
                 </div>
-                <div class="col-md-2" style="max-width: 160px">
+                <div class="col-md-3">
                     <label for="shareholderDOB" class="form-label">DOB *</label>
                     <input type="date" class="form-control" name="shareholderDOB[]" required>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="shareholderNationality" class="form-label">Nationality *</label>
                     <select class="form-select select2" name="shareholderNationality[]" required>
                         <option selected>Select Country</option>
@@ -291,13 +291,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <label for="shareholderID" class="form-label">Shareholder QID / National ID / Passport </label>
+                <div class="col-md-3">
+                    <label for="shareholderID" class="form-label"> QID / National ID / Passport  * </label>
                     <input type="text" class="form-control" name="shareholderID[]">
                 </div>
                 <div class="col-md-1">
                     <a class="remove-btn">
-                        <i class="ti ti-trash" style="margin-top: 30px;"></i>
+                        <i class="ti ti-trash" style="margin-top: 35px;"></i>
                     </a>
                 </div>
             `;

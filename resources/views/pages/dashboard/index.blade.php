@@ -15,7 +15,7 @@
       <div class="row g-6">
         <h3 class="fw-bold">Profile Status</h3>
 
-        <div class="col-xl-4">
+        <div class="col-12 col-sm-6 col-xl-4">
           <div class="card h-100">
             <div class="d-flex align-items-end row">
 
@@ -57,7 +57,7 @@
 
 
 
-        <div class="col-xl-4">
+        <div class="col-12 col-sm-6 col-xl-4">
           <div class="card h-100">
             <div class="d-flex align-items-end row">
               <div class="col-7">
@@ -65,21 +65,22 @@
 
                   <h5 class="card-title mb-5" style="font-weight: bold;">Documents Upload</h5>
 
-                  @if(!$merchant_details->documents)
-                  <h5 class="card-title mb-5" style="">Documents required to complete the profile.</h5>
-                 @endif
-                 @php
-                      $allDocumentsApproved = $merchant_details->documents->every(function ($document) {
-                          return !is_null($document->approved_by);
-                      });
-                  @endphp
-
-                  @if($allDocumentsApproved)
-                      <h5 class="card-title mb-5" style="">Step 2: Completed</h5>
+                  @if($merchant_details->documents->isEmpty())
+                      <h6 class="card-title mb-5" style="">Documents required</h6>
                   @else
-                      <h5 class="card-title mb-5" style="">Step 2: Pending Approval</h5>
+                      @php
+                          $allDocumentsApproved = $merchant_details->documents->every(function ($document) {
+                              return !is_null($document->approved_by);
+                          });
+                      @endphp
+                  
+                      @if($allDocumentsApproved)
+                          <h5 class="card-title mb-5" style="">Step 2: Completed</h5>
+                      @else
+                          <h5 class="card-title mb-5" style="">Step 2: Pending Approval</h5>
+                      @endif
                   @endif
-
+              
 
                   @if($merchant_details->documents)
                   <a href="{{ route('create.merchants.documents') }}" class="btn btn-warning disabled"
@@ -104,7 +105,7 @@
           </div>
         </div>
 
-        <div class="col-xl-4">
+        <div class="col-12 col-sm-6 col-xl-4">
           <div class="card h-100">
             <div class="d-flex align-items-end row">
               <div class="col-7">
@@ -121,14 +122,17 @@
 
                 </div>
               </div>
+
               <div class="col-5 text-center text-sm-left">
-                <div class="card-body pb-5 px-0 px-md-4">
+                <div class="card-body pb-5 px-0 px-md-4 d-flex justify-content-center">
                   <img
                     src="../../assets/img/illustrations/tick_image_new.jpeg"
-                    height="100"
+                    class="img-fluid"
+                    style="max-height: 100px;"
                     alt="view sales" />
                 </div>
               </div>
+
             </div>
           </div>
         </div>
