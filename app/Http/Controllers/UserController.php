@@ -42,10 +42,6 @@ class UserController extends Controller
             return redirect()->route('create.merchants.kfc');
         }
     }
-    public function dashboard2()
-    {
-        dd('ia m here');
-    }
 
     public function profile()
     {
@@ -86,12 +82,9 @@ class UserController extends Controller
             'userGender' => 'nullable|in:male,female',
         ]);
 
-        dd($validatedData);
         // Use the UserService to create the user and get the created user object
         $user = $this->userService->createUser($validatedData);
         return redirect()->route('login')->with('success', 'User created successfully. Please log in.');
-        // Redirect with success message to edit the newly created user
-        // return redirect()->route('users.edit', ['user_id' => $user->id])->with('success', 'User created successfully.');
     }
 
 
