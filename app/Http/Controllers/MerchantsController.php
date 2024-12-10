@@ -68,8 +68,9 @@ class MerchantsController extends Controller
        /**
      * Show the form for creating a new resource.
      */
-    public function create_merchants_kfc(Request $request)
+    public function create_merchants(Request $request)
     {
+      
         
         $title = 'Create Merchants KYC';
         $MerchantCategory = MerchantCategory::all();

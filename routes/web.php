@@ -89,7 +89,8 @@ Route::middleware(['auth'])->group(function () {
     // Merchant-specific KYC, Documents, Sales, Services
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/merchantskyc', [MerchantsController::class, 'create_merchants_kfc'])->name('create.merchants.kfc');
+        Route::get('/merchants', [MerchantsController::class, 'create_merchants'])->name('create.merchants.kfc');
+        // Route::get('/merchantskyc', [MerchantsController::class, 'create_merchants'])->name('create.merchants.kfc');
         Route::post('/store/merchantskyc', [MerchantsController::class, 'store_merchants_kyc'])->name('store.merchants.kyc');
         Route::get('/editMechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
         Route::post('/updateMerchantsKyc', [MerchantsController::class, 'update_merchants_kyc'])->name('update.merchants.kyc');

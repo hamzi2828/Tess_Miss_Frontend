@@ -22,11 +22,11 @@ class UserService
         if (isset($data['userPicture']) && $data['userPicture']->isValid()) {
             $filePath = $data['userPicture']->store('uploads', 'public');
         } else {
-            $filePath = null; // Set null if no image is uploaded
+            $filePath = null; 
         }
      
         // Create the user
-        return User::create([
+        $user = User::create([
             'name' => $data['userFullname'],
             'email' => $data['userEmail'],
             'password' => Hash::make($data['password']), // Hash the password
@@ -38,6 +38,8 @@ class UserService
             'picture' => $filePath,
             'userGender' => $data['userGender'] ?? 'null',
         ]);
+        
+        return $user;
     }
 
     /**
