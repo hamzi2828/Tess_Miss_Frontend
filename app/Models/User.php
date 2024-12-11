@@ -131,5 +131,48 @@ class User extends Authenticatable
             'department' => $user->getDepartmentTitle($user->department),
         ] : [];
     }
+
+    public function merchant()
+    {
+        return $this->hasOne(Merchant::class, 'added_by', 'id');
+    }
+
+
+
+
+    public function isMerchantApproved(): bool
+    {
+        $merchant = $this->merchant; 
+        return $merchant && $merchant->approved_by !== null;
+    }
+
+    public function isMerchantDocumentApproved(): bool
+    {
+        $merchant = $this->merchant;
+    
+        if ($merchant && $merchant->documents->isNotEmpty()) {
+            return $merchant->documents->every(function ($document) {
+                return $document->approved_by !== null; 
+            });
+        }
+    
+        return false; 
+    }
+
+    public function isMerchantSaleApproved(): bool
+    {
+        $merchant = $this->merchant;
+
+        $merchantSales = $merchant->sales;
+
+        return $merchantSales && $merchantSales->where('approved_by', '!=', null)->isNotEmpty();
+    }
+
+    public function isMerchantServiceApproved(): bool
+    {
+        $merchant = $this->merchant; 
+        $merchantServices = $merchant->services;
+        return $merchant && $merchantServices->whereNotNull('approved_by')->isNotEmpty();
+    }
     
 }

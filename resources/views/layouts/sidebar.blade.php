@@ -16,7 +16,7 @@
 
     <ul class="menu-inner py-5">
       <!-- e-commerce-app menu end -->
-
+ 
       <li class="menu-item ">
         <a href="{{ route('dashboard') }}" class="menu-link">
           <i class="menu-icon tf-icons ti ti-layout-kanban"></i>
@@ -48,22 +48,36 @@
       </li>
 
 
-      <li class="menu-item {{ Request::is('pages/*') ? 'open' : '' }}">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons ti ti-components"></i>
-            <div data-i18n="Pages">Pages</div>
-        </a>
 
-        <ul class="menu-sub">
-            @foreach(App\Models\Page::where('status', 'active')->get() as $page)
-                <li class="menu-item {{ request()->routeIs('pages.show') && request()->segment(2) == $page->slug ? 'active' : '' }}">
-                    <a href="{{ route('pages.show', $page->slug) }}" class="menu-link">
-                        <div data-i18n="{{ $page->id }}">{{ $page->name }}</div>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-    </li>
+        @php
+          $user = Auth::user();
+          $isMerchantApproved = $user->isMerchantApproved();
+          $isMerchnatDocumentsApproved = $user->isMerchantDocumentApproved();
+          $isMerchantSalesApproved = $user->isMerchantSaleApproved();
+          $isMerchantServicesApproved = $user->isMerchantServiceApproved();
+          $isAllApproved = $isMerchantApproved && $isMerchnatDocumentsApproved && $isMerchantSalesApproved && $isMerchantServicesApproved;
+        @endphp
+  
+        @if ($isAllApproved)
+          @foreach(App\Models\Page::where('status', 'active')->where('display', 'approved')->get() as $page)
+              <li class="menu-item {{ request()->routeIs('pages.show') && request()->segment(2) == $page->slug ? 'active' : '' }}">
+                  <a href="{{ route('pages.show', $page->slug) }}" class="menu-link">
+                      <i class="menu-icon tf-icons ti ti-circle"></i>
+                      <div data-i18n="{{ $page->id }}">{{ $page->name }}</div>
+                  </a>
+              </li>
+          @endforeach
+        @else
+        @foreach(App\Models\Page::where('status', 'active')->where('display', 'unapproved')->get() as $page)
+            <li class="menu-item {{ request()->routeIs('pages.show') && request()->segment(2) == $page->slug ? 'active' : '' }}">
+                <a href="{{ route('pages.show', $page->slug) }}" class="menu-link">
+                    <i class="menu-icon tf-icons ti ti-circle"></i>
+                    <div data-i18n="{{ $page->id }}">{{ $page->name }}</div>
+                </a>
+            </li>
+        @endforeach
+        @endif
+    
 
 
 
