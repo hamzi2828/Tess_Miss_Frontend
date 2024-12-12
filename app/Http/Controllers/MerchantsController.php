@@ -51,7 +51,6 @@ class MerchantsController extends Controller
     public function preview(Request $request)
     {
         
-      
         $merchant_id = $request->input('merchant_id');
 
         $title = 'View Merchants Details';
@@ -64,6 +63,8 @@ class MerchantsController extends Controller
         if (!$merchant_details) {
             return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
+
+        
         if($merchant_details->declined_by !== null && $merchant_details->approved_by == null){
             return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
@@ -410,9 +411,9 @@ class MerchantsController extends Controller
         if (!$merchant_details) {
             return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
-        if($merchant_details->declined_by == null){
-            return redirect()->back()->with('error', 'kyc not declined yet.');
-        }
+        // if($merchant_details->declined_by == null){
+        //     return redirect()->back()->with('error', 'kyc not declined yet.');
+        // }
         if($merchant_details->approved_by !== null && $merchant_details->declined_by == null){
             return redirect()->route('preview.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
