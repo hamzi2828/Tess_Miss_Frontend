@@ -59,7 +59,7 @@
         @endphp
   
         @if ($isAllApproved)
-          @foreach(App\Models\Page::where('status', 'active')->where('display', 'approved')->get() as $page)
+          @foreach(App\Models\Page::where('status', 'active')->get() as $page)
               <li class="menu-item {{ request()->routeIs('pages.show') && request()->segment(2) == $page->slug ? 'active' : '' }}">
                   <a href="{{ route('pages.show', $page->slug) }}" class="menu-link">
                       <i class="menu-icon tf-icons ti ti-circle"></i>

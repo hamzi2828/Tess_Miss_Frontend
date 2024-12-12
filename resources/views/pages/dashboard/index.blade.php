@@ -1,6 +1,6 @@
 @extends('master.master')
 
-@section('title', 'index')
+@section('title', ' Merchant Forms ')
 
 @push('css')
 @endpush
