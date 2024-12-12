@@ -247,7 +247,7 @@ class UserController extends Controller
                     $routeName = $userStage == 1 
                         ? 'edit.merchants.kyc' 
                         : ($userStage == 2 
-                            ? 'edit.merchants.documents' 
+                            ? 'edit.documents' 
                             : ($userStage == 3 
                                 ? 'edit.merchants.sales' 
                                 : 'edit.merchants.services'));

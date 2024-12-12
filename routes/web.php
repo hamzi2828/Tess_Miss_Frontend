@@ -55,7 +55,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/MechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
-    Route::get('/test', [MerchantsController::class, 'create_merchants_documents'])->name('edit.documents');
+    // Route::get('/test', [MerchantsController::class, 'create_merchants_documents'])->name('edit.documents');
+    Route::get('/editDocuments', [MerchantsController::class, 'edit_merchants_documents'])->name('edit.documents');
+
 
 
 
@@ -85,6 +87,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('merchants', MerchantsController::class);
     // Add a new route for preview functionality for merchants
     Route::get('/merchantsPreview', [MerchantsController::class, 'preview'])->name('merchants.preview');
+    Route::get('/documentsPreview', [MerchantsController::class, 'documents_preview'])->name('preview.documents');
+
     Route::post('/merchants/{id}/approve', [MerchantsController::class, 'approve_merchants'])->name('merchants.approve');
     Route::post('/merchants/{id}/decline', [MerchantsController::class, 'decline_merchants'])->name('merchants.decline');
 
@@ -115,7 +119,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/createMerchantsDocuments', [MerchantsController::class, 'create_merchants_documents'])->name('create.merchants.documents');
         Route::post('/storeMerchantsDocuments', [MerchantsController::class, 'store_merchants_documents'])->name('store.merchants.documents');
-        Route::get('/editMechnatDocuments', [MerchantsController::class, 'edit_merchants_documents'])->name('edit.merchants.documents');
+        // Route::get('/editMechnatDocuments', [MerchantsController::class, 'edit_merchants_documents'])->name('edit.documents');
         Route::post('/updateMerchantsDocuments', [MerchantsController::class, 'update_merchants_documents'])->name('update.merchants.documents');
         Route::get('/approveMerchantsDocuments', [MerchantsController::class, 'approve_merchants_documents'])->name('approve.merchants.documents');
         Route::get('/merchants/decline/documents', [MerchantsController::class, 'decline_merchants_documents'])->name('decline.merchants.documents');

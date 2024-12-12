@@ -76,15 +76,9 @@
                       @endif
                   @endif
               
-{{-- 
-                  @if($merchant_details->documents)
-                  <a href="{{ route('create.merchants.documents') }}" class="btn btn-warning disabled"
-                  style="background: #FFCD69; pointer-events: none; opacity: 0.65;"
-                  aria-disabled="true">Upload Documents</a>
-                  @else
-                  <a href="{{ route('create.merchants.documents') }}" class="btn btn-warning"
-                      style="background: #FFCD69;">Upload Documents</a>
-                  @endif --}}
+                  <a href="{{ route('edit.documents') }}" class="btn btn-primary"                 
+                  >Upload Documents</a>
+
 
                 </div>
               </div>

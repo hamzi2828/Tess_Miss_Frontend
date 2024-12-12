@@ -73,7 +73,31 @@ class MerchantsController extends Controller
 
     }
 
+    public function documents_preview (Request $request)
+    {
+        
+        $merchant_id = $request->input('merchant_id');
 
+        $title = 'Preview Merchants Details';
+        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents', 'operating_countries'])->where('id', $merchant_id)->first();
+
+        $MerchantCategory = MerchantCategory::all();
+        $Country = Country::all();
+        $all_documents  = Document::all();
+      
+         
+        if (!$merchant_details) {
+            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+        }
+
+        
+        if($merchant_details->declined_by !== null && $merchant_details->approved_by == null){
+            return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+        }
+
+        return view('pages.merchants.edit.preview-merchants-documents', compact('merchant_details', 'title', 'all_documents'));
+
+    }
 
 
        /**
@@ -117,26 +141,41 @@ class MerchantsController extends Controller
 
     public function create_merchants_documents(Request $request)
     {
+
+       
+
+
         $title = 'Create Merchants Documents';
         $merchant_documents = Document::all();
         $merchant_details = null;
 
-        if ($request->has('merchant_id')) {
-            $merchant_id = $request->input('merchant_id');
-            $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])
-                ->where('id', $merchant_id)
-                ->first();
-             $merchant_shareholders = MerchantShareholder::where('merchant_id', $merchant_id)->get();
+    
+        $merchant_details = Merchant::where("added_by", auth()->user()->id)->first();
+        $merchant_id = $request->input('merchant_id') ?? $merchant_details->id;
+        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])
+            ->where('id', $merchant_id)
+            ->first();
+            $merchant_shareholders = MerchantShareholder::where('merchant_id', $merchant_id)->get();
 
-             if (is_null($merchant_details->approved_by)) {
-                return redirect()->back()->with('error', 'kyc not approved yet.');
+            if (!$merchant_details) {
+            return redirect()->route('create.merchants.kyc');
              }
 
-            if ($merchant_details && !$merchant_details->documents->isEmpty()) {
-                return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
+        
+            if (is_null($merchant_details->approved_by)) {
+            return redirect()->back()->with('error', 'kyc not approved yet.');
+            }
+           
+            if ($merchant_details && $merchant_details->documents->isNotEmpty() && !$merchant_details->documents->every(fn($doc) => $doc->approved_by == null) && $merchant_details->documents->every(fn($doc) => $doc->declined_by !== null)) 
+            {             
+                return redirect()->route('edit.documents', ['merchant_id' => $merchant_id])
                     ->with('info', 'Documents already exists. Redirecting to edit page.');
             }
-        }
+            if ($merchant_details && $merchant_details->documents->isNotEmpty() && !$merchant_details->documents->every(fn($doc) => $doc->declined_by == null) && $merchant_details->documents->every(fn($doc) => $doc->approved_by !== null)) 
+            {             
+                return redirect()->route('preview.documents', ['merchant_id' => $merchant_id])
+                    ->with('info', 'Documents already exists. Redirecting to edit page.');
+            }
 
         // if (!auth()->user()->can('addDocuments', auth()->user())) {
         //     return redirect()->back()->with('error', 'You are not authorized.');
@@ -322,7 +361,7 @@ class MerchantsController extends Controller
  
          $this->notificationService->storeMerchantsDocuments($merchant_id);
 
-        //  return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
+        //  return redirect()->route('edit.documents', ['merchant_id' => $merchant_id])
         //      ->with('success', 'Documents uploaded and saved successfully.')
         //      ->withInput($request->all());
         return redirect()->route('dashboard');
@@ -457,25 +496,30 @@ class MerchantsController extends Controller
         $title = 'Edit Merchants Details';
 
         $merchant_id = $request->input('merchant_id');
-        $merchant_details = Merchant::with(['documents', 'sales', 'services', 'shareholders'])->where('id', $merchant_id)->first();
+        $merchant_details = Merchant::with(['documents', 'sales', 'services', 'shareholders'])->where('added_by', auth()->user()->id)->first();
         $all_documents  = Document::all();
+        $merchant_id = $request->input('merchant_id') ?? $merchant_details->id;
 
-        
+        if (!$merchant_details) {
+            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+        }
+
         if ($merchant_details->documents->isEmpty()) {
            
             return redirect()->route('create.merchants.documents', ['merchant_id' => $merchant_id]);
         }
-        // if (!auth()->user()->can('changeDocuments', auth()->user()))
-        // {
-        //     return redirect()->back()->with('error', 'You are not authorized.');
-        // }
-            if (is_null($merchant_details->approved_by)) {
-                return redirect()->back()->with('error', 'kyc not approved yet.');
-                }
+
+        if($merchant_details->approved_by !== null && $merchant_details->declined_by == null){
+            return redirect()->route('preview.documents', ['merchant_id' => $merchant_id]);
+        }
+
+            // if (is_null($merchant_details->approved_by)) {
+            //     return redirect()->back()->with('error', 'kyc not approved yet.');
+            //     }
                
-            if (is_null($merchant_details->documents->first()->declined_by)) {
-                return redirect()->back()->with('error', 'Documents not declined yet.');
-            }
+            // if (is_null($merchant_details->documents->first()->declined_by)) {
+            //     return redirect()->back()->with('error', 'Documents not declined yet.');
+            // }
             return view('pages.merchants.edit.edit-merchants-documents', compact('merchant_details', 'title', 'all_documents'));
         
     }
