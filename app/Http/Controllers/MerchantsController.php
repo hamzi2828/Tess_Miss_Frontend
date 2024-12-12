@@ -59,7 +59,7 @@ class MerchantsController extends Controller
 
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
-        dd($merchant_details->declined_by);
+      
          
         if (!$merchant_details) {
             return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
