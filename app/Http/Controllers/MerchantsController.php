@@ -61,7 +61,7 @@ class MerchantsController extends Controller
       
          
         if (!$merchant_details) {
-            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+            return redirect()->route('create.merchants.kfc', ['merchant_id' => $merchant_id]);
         }
 
         
@@ -87,7 +87,7 @@ class MerchantsController extends Controller
       
          
         if (!$merchant_details) {
-            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+            return redirect()->route('create.merchants.kfc', ['merchant_id' => $merchant_id]);
         }
 
         
@@ -158,7 +158,7 @@ class MerchantsController extends Controller
             $merchant_shareholders = MerchantShareholder::where('merchant_id', $merchant_id)->get();
 
             if (!$merchant_details) {
-            return redirect()->route('create.merchants.kyc');
+            return redirect()->route('create.merchants.kfc');
              }
 
         
@@ -448,7 +448,7 @@ class MerchantsController extends Controller
         
          
         if (!$merchant_details) {
-            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+            return redirect()->route('create.merchants.kfc', ['merchant_id' => $merchant_id]);
         }
         // if($merchant_details->declined_by == null){
         //     return redirect()->back()->with('error', 'kyc not declined yet.');
@@ -477,7 +477,7 @@ class MerchantsController extends Controller
         
          
         if (!$merchant_details) {
-            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+            return redirect()->route('create.merchants.kfc', ['merchant_id' => $merchant_id]);
         }
         if($merchant_details->declined_by == null){
             return redirect()->back()->with('error', 'kyc not declined yet.');
@@ -501,7 +501,7 @@ class MerchantsController extends Controller
         $merchant_id = $request->input('merchant_id') ?? $merchant_details->id;
 
         if (!$merchant_details) {
-            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+            return redirect()->route('create.merchants.kfc', ['merchant_id' => $merchant_id]);
         }
 
         if ($merchant_details->documents->isEmpty()) {
