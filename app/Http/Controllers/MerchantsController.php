@@ -59,13 +59,13 @@ class MerchantsController extends Controller
 
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
-        
+     
          
         if (!$merchant_details) {
             return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
         if($merchant_details->declined_by !== null){
-            return redirect()->back()->with('error', 'kyc not declined yet.');
+            return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
         }
 
         return view('pages.merchants.view-merchant', compact('merchant_details', 'title', 'MerchantCategory', 'Country'));
@@ -80,13 +80,14 @@ class MerchantsController extends Controller
      */
     public function create_merchants(Request $request)
     {
-       
+    
         $merchant = Merchant::where('added_by', auth()->user()->id)->first();
+      
         if ($merchant) {
             return redirect()->route('merchants.preview', ['merchant_id' => $merchant->id]);
         }
     
-        
+
         $title = 'Create Merchants KYC';
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
