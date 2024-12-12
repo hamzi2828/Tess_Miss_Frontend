@@ -50,17 +50,26 @@ class MerchantsController extends Controller
     // Method to preview merchant details
     public function preview(Request $request)
     {
-          $title  = 'Preview Merchants Details';
-        $merchantId = $request->input('merchant_id');
-        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])->where('id', $merchantId)->first();
-        $merchant = $this->merchantsService->getAllMerchants($merchantId);
         
+      
+        $merchant_id = $request->input('merchant_id');
+
+        $title = 'View Merchants Details';
+        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents', 'operating_countries'])->where('id', $merchant_id)->first();
+
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
-        $all_documents  = Document::all();
-        $services = Service::all();
+        
+         
+        if (!$merchant_details) {
+            return redirect()->route('create.merchants.kyc', ['merchant_id' => $merchant_id]);
+        }
+        if($merchant_details->declined_by !== null){
+            return redirect()->back()->with('error', 'kyc not declined yet.');
+        }
 
-        return view('pages.merchants.merchants-preview', compact('merchant_details','title','MerchantCategory','Country','all_documents','services','merchant'));
+        return view('pages.merchants.view-merchant', compact('merchant_details', 'title', 'MerchantCategory', 'Country'));
+
     }
 
 
@@ -74,7 +83,7 @@ class MerchantsController extends Controller
        
         $merchant = Merchant::where('added_by', auth()->user()->id)->first();
         if ($merchant) {
-            return redirect()->route('dashboard')->with('error', 'You are already a merchant. Please contact the admin.');
+            return redirect()->route('merchants.preview', ['merchant_id' => $merchant->id]);
         }
     
         

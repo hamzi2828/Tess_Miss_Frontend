@@ -163,6 +163,10 @@ class User extends Authenticatable
     {
         $merchant = $this->merchant;
 
+        if (!$merchant) {
+            return false;
+        }
+
         $merchantSales = $merchant->sales;
 
         return $merchantSales && $merchantSales->where('approved_by', '!=', null)->isNotEmpty();
@@ -171,8 +175,12 @@ class User extends Authenticatable
     public function isMerchantServiceApproved(): bool
     {
         $merchant = $this->merchant; 
+        if (!$merchant) {
+            return false;
+        }
+
         $merchantServices = $merchant->services;
-        return $merchant && $merchantServices->whereNotNull('approved_by')->isNotEmpty();
+        return $merchantServices->whereNotNull('approved_by')->isNotEmpty();
     }
     
 }

@@ -73,8 +73,10 @@ class UserController extends Controller
         return view('auth.login');
     }
 
-    public function newPasswordForm(Request $request, $token)
+    public function newPasswordForm(Request $request)
     {
+
+        $token = $request->query('token');
         $user = User::where('remember_token', $token)->first();
 
         // If the token doesn't exist, show an error message

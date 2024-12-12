@@ -41,7 +41,8 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/usersCreate', [UserController::class, 'showRegistrationForm'])->name('users.register');
 Route::get('forgot-password', [UserController::class, 'showforgotPasswordform'])->name('forgot.password');
 Route::post('send-reset-link', [AuthController::class, 'sendResetLink'])->name('send.reset.link');
-Route::get('/{token}', [UserController::class, 'newPasswordForm'])->name('password.reset');
+// Route::get('/{token}', [UserController::class, 'newPasswordForm'])->name('password.reset');
+Route::get('/password-reset', [UserController::class, 'newPasswordForm'])->name('password.reset');
 Route::post('/password/update', [AuthController::class, 'updatePassword'])->name('password.update');
 
 
@@ -83,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('countries', CountryController::class);
     Route::resource('merchants', MerchantsController::class);
     // Add a new route for preview functionality for merchants
-    Route::get('/merchantsPreview}', [MerchantsController::class, 'preview'])->name('merchants.preview');
+    Route::get('/merchantsPreview', [MerchantsController::class, 'preview'])->name('merchants.preview');
     Route::post('/merchants/{id}/approve', [MerchantsController::class, 'approve_merchants'])->name('merchants.approve');
     Route::post('/merchants/{id}/decline', [MerchantsController::class, 'decline_merchants'])->name('merchants.decline');
 

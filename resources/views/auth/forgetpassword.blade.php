@@ -215,6 +215,13 @@
             <div class="w-px-400 mx-auto mt-12 mt-5">
               <h4 class="mb-1">Forgot Password? 🔒</h4>
               <p class="mb-6">Enter your email and we'll send you instructions to reset your password</p>
+
+              @if (session('success'))
+              <div class="alert alert-success">
+                  {{ session('success') }}
+              </div>
+          @endif
+      
               <form id="formAuthentication" class="mb-6" action="{{ route('send.reset.link') }}" method="POST">
                 @csrf
                 <div class="mb-6">
