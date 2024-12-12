@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Models\ActivityLog;
 use App\Models\Merchant;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -60,6 +62,41 @@ class UserController extends Controller
     
         return view('auth.register');
     }
+
+    public function showforgotPasswordform()
+    {
+        return view('auth.forgetpassword');
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function newPasswordForm(Request $request, $token)
+    {
+        $user = User::where('remember_token', $token)->first();
+
+        // If the token doesn't exist, show an error message
+        if (!$user) {
+            return redirect()->route('login')->withErrors(['token' => 'Invalid or expired token.']);
+        }
+    
+        // Check if the token is expired
+        $tokenCreatedTime = Carbon::parse($user->resetlink_created_at);
+        $tokenExpirationTime = $tokenCreatedTime->addMinutes(10); 
+        
+        if (Carbon::now()->gt($tokenExpirationTime)) {
+
+            return redirect()->route('login')->withErrors(['error_login' => 'Invalid or expired token.']);
+        }
+        return view('auth.newpassword', ['token' => $token]);
+    }
+    
+    
+
+   
+    
     /**
      * Store a newly created resource in storage.
      */

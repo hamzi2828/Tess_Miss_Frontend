@@ -39,6 +39,14 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/usersCreate', [UserController::class, 'showRegistrationForm'])->name('users.register');
+Route::get('forgot-password', [UserController::class, 'showforgotPasswordform'])->name('forgot.password');
+Route::post('send-reset-link', [AuthController::class, 'sendResetLink'])->name('send.reset.link');
+Route::get('/{token}', [UserController::class, 'newPasswordForm'])->name('password.reset');
+Route::post('/password/update', [AuthController::class, 'updatePassword'])->name('password.update');
+
+
+
+
 Route::resource('users', UserController::class);
 
 // Authenticated routes

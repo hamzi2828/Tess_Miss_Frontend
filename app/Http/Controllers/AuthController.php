@@ -5,6 +5,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Mail\SendResetLink;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -88,5 +91,59 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('login');
+    }
+
+
+    public function sendResetLink(Request $request)
+    {
+        // Validate the email input
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // Attempt to find the user by email
+        $user = User::where('email', $request->email)->first();
+    
+        // Check if the user is not a frontend user
+        if ($user->role !== 'frontendUser') {
+            return redirect()->route('login')->with('error_login', 'You are not authorized to request a password reset link.');
+        }
+        
+        // Check if the user exists
+        if (!$user) {
+            return response()->json([
+                'error_login' => 'We could not find a user with that email address.',
+            ], 404);
+        }
+
+        // Delete any existing password reset tokens for the user
+        $user->remember_token = Str::random(60);
+        $user->resetlink_created_at = now();
+        $user->save();
+
+       // Send the reset link via email
+       Mail::to($user->email)->send(new SendResetLink($user->remember_token));
+    
+
+        return back()->with('success', 'We have e-mailed your password reset link!');
+    }
+    public function updatePassword(Request $request){
+      
+
+        $user = User::where('remember_token', $request->token)->first();
+        if(!$user){
+            return redirect()->back()->withErrors(['error_foget_password' => 'Invalid or expired token.']);
+        }
+        if ($request->password != $request->password_confirmation) {
+            return redirect()->back()->withErrors(['error_foget_password' => 'Passwords do not match']);
+        }
+    
+        $user->password = Hash::make($request->password);
+        $user->remember_token = null;
+        $user->resetlink_created_at = null;
+        $user->save();
+        return redirect()->route('login')->with('success', 'Your password has been updated successfully. You can now log in with your new password.');
+    
+
     }
 }
