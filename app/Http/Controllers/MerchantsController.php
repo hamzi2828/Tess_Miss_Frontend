@@ -139,7 +139,7 @@ class MerchantsController extends Controller
 
 
 
-    public function create_merchants_documents(Request $request)
+    public function create_documents (Request $request)
     {
 
        

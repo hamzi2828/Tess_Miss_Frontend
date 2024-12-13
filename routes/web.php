@@ -57,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/MechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
     // Route::get('/test', [MerchantsController::class, 'create_merchants_documents'])->name('edit.documents');
     Route::get('/editDocuments', [MerchantsController::class, 'edit_merchants_documents'])->name('edit.documents');
+    Route::get('/createDocuments', [MerchantsController::class, 'create_documents'])->name('create.merchants.documents');
+
 
 
 
@@ -117,7 +119,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/createMerchantsDocuments', [MerchantsController::class, 'create_merchants_documents'])->name('create.merchants.documents');
         Route::post('/storeMerchantsDocuments', [MerchantsController::class, 'store_merchants_documents'])->name('store.merchants.documents');
         // Route::get('/editMechnatDocuments', [MerchantsController::class, 'edit_merchants_documents'])->name('edit.documents');
         Route::post('/updateMerchantsDocuments', [MerchantsController::class, 'update_merchants_documents'])->name('update.merchants.documents');
