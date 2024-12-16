@@ -36,10 +36,21 @@ class UserController extends Controller
     public function dashboard()
     {
         $merchantId = Auth::user()->id;
-        
+
         $merchant_details = Merchant::with('documents', 'sales', 'services')->where('added_by', $merchantId)->first();
+        $merchant_percent = 0;
+        $document_percent = 0;
+        $sales_percent = 0;
+        $service_percent = 0;
+
+        if ($merchant_details) { $merchant_percent += 25; }
+        if (count($merchant_details->documents)) { $document_percent = 25; }
+        if (count($merchant_details->sales)) { $sales_percent = 25; }
+        if (count($merchant_details->services)) { $service_percent = 25; }
+        $total_percent = $merchant_percent + $document_percent + $sales_percent + $service_percent;
+
         if($merchant_details){
-            return view('pages.dashboard.index', compact('merchant_details'));
+            return view('pages.dashboard.index', compact('merchant_details', 'merchant_percent', 'total_percent', 'document_percent', 'sales_percent', 'service_percent'));
         }else{
             return redirect()->route('create.merchants.kfc');
         }
@@ -59,7 +70,7 @@ class UserController extends Controller
 
     public function showRegistrationForm(){
 
-    
+
         return view('auth.register');
     }
 
@@ -83,29 +94,29 @@ class UserController extends Controller
         if (!$user) {
             return redirect()->route('login')->withErrors(['token' => 'Invalid or expired token.']);
         }
-    
+
         // Check if the token is expired
         $tokenCreatedTime = Carbon::parse($user->resetlink_created_at);
-        $tokenExpirationTime = $tokenCreatedTime->addMinutes(10); 
-        
+        $tokenExpirationTime = $tokenCreatedTime->addMinutes(10);
+
         if (Carbon::now()->gt($tokenExpirationTime)) {
 
             return redirect()->route('login')->withErrors(['error_login' => 'Invalid or expired token.']);
         }
         return view('auth.newpassword', ['token' => $token]);
     }
-    
-    
 
-   
-    
+
+
+
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
 
- 
+
         // Validate the request data
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
@@ -178,7 +189,7 @@ class UserController extends Controller
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'User updated successfully');
-       
+
     }
 
     /**
@@ -210,14 +221,14 @@ class UserController extends Controller
 
         public function markAsRead($id, Request $request)
         {
-         
+
             $notification = Auth::user()->notifications->where('id', $id)->first();
 
             if ($notification) {
                 $notification->markAsRead();
                 $activityType = $notification->data['activity_type'] ?? null;
                 $merchant_id =  $request->get('merchant_id');
-                
+
 
                 if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'store') {
 
@@ -228,7 +239,7 @@ class UserController extends Controller
                 //     return redirect()->route('edit.merchants.services', ['merchant_id' => $merchant_id]);
                 // }
                 if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'approve' || $activityType == 'decline') {
-            
+
                     $userStage = auth()->user()->getDepartmentStage(auth()->user()->department);
                     $userrole = auth()->user()->getUserRoleById(auth()->user()->id);
 
@@ -244,18 +255,18 @@ class UserController extends Controller
                         }
                     }
                     // Determine the route name dynamically based on stage
-                    $routeName = $userStage == 1 
-                        ? 'edit.merchants.kyc' 
-                        : ($userStage == 2 
-                            ? 'edit.documents' 
-                            : ($userStage == 3 
-                                ? 'edit.merchants.sales' 
+                    $routeName = $userStage == 1
+                        ? 'edit.merchants.kyc'
+                        : ($userStage == 2
+                            ? 'edit.documents'
+                            : ($userStage == 3
+                                ? 'edit.merchants.sales'
                                 : 'edit.merchants.services'));
-        
+
                     // Redirect to the appropriate route
                     return redirect()->route($routeName, ['merchant_id' => $merchant_id]);
                 }
-                
+
 
             }
 

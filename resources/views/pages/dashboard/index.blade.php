@@ -15,6 +15,52 @@
       <div class="row g-6">
         <h3 class="fw-bold">Profile Status</h3>
 
+        <div class="card">
+            <h5 class="card-header">Merchant Progress</h5>
+            <div class="card-body">
+
+                <div class="text-light small fw-medium mb-1">Completed {{ $total_percent }}%</div>
+                <div class="progress">
+
+                    <!-- Merchant Progress -->
+                    <div class="progress-bar bg-info" role="progressbar"
+                        style="width: {{ $merchant_percent }}%"
+                        aria-valuenow="{{ $merchant_percent }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                    </div>
+
+                    <!-- Document Progress -->
+                    <div class="progress-bar bg-info" role="progressbar"
+                        style="width: {{ $document_percent }}%"
+                        aria-valuenow="{{ $document_percent }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                    </div>
+
+                    <!-- Sales Progress -->
+                    <div class="progress-bar bg-info" role="progressbar"
+                        style="width: {{ $sales_percent }}%"
+                        aria-valuenow="{{ $sales_percent }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                    </div>
+
+                    <!-- Service Progress -->
+                    <div class="progress-bar bg-info" role="progressbar"
+                        style="width: {{ $service_percent }}%"
+                        aria-valuenow="{{ $service_percent }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
         <div class="col-12 col-sm-6 col-xl-4">
           <div class="card h-100">
             <div class="d-flex align-items-end row">
@@ -49,8 +95,6 @@
             </div>
           </div>
         </div>
-
-
 
         <div class="col-12 col-sm-6 col-xl-4">
           <div class="card h-100">
@@ -127,90 +171,6 @@
         </div>
 
         <!-- View sales -->
-
-        <!-- Statistics -->
-        {{-- <div class="col-xl-8 col-md-12">
-          <div class="card h-100">
-            <div class="card-header d-flex justify-content-between">
-              <h5 class="card-title mb-0">Statistics</h5>
-              <small class="text-muted">Updated 1 month ago</small>
-            </div>
-            <div class="card-body d-flex align-items-end">
-              <div class="w-100">
-                <div class="row gy-3">
-                  <div class="col-md-4 col-6">
-                    <div class="d-flex align-items-center">
-                      <div class="badge rounded bg-label-primary me-4 p-2">
-                        <i class="ti ti-chart-pie-2 ti-lg"></i>
-                      </div>
-                      <div class="card-info">
-                        <h5 class="mb-0">230k</h5>
-                        <small>Total Merchants</small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-6">
-                    <div class="d-flex align-items-center">
-                      <div class="badge rounded bg-label-info me-4 p-2"><i class="ti ti-users ti-lg"></i></div>
-                      <div class="card-info">
-                        <h5 class="mb-0">8.549k</h5>
-                        <small>Pending KYC</small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-6">
-                    <div class="d-flex align-items-center">
-                      <div class="badge rounded bg-label-danger me-4 p-2">
-                        <i class="ti ti-shopping-cart ti-lg"></i>
-                      </div>
-                      <div class="card-info">
-                        <h5 class="mb-0">1.423k</h5>
-                        <small>Approved KYC</small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-6">
-                    <div class="d-flex align-items-center">
-                      <div class="badge rounded bg-label-success me-4 p-2">
-                        <i class="ti ti-currency-dollar ti-lg"></i>
-                      </div>
-                      <div class="card-info">
-                        <h5 class="mb-0"> 9745</h5>
-                        <small>Sales</small>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4 col-6">
-                    <div class="d-flex align-items-center">
-                      <div class="badge rounded bg-label-success me-4 p-2">
-                        <i class="ti ti-currency-dollar ti-lg"></i>
-                      </div>
-                      <div class="card-info">
-                        <h5 class="mb-0"> 9745</h5>
-                        <small>Services</small>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4 col-6">
-                    <div class="d-flex align-items-center">
-                      <div class="badge rounded bg-label-success me-4 p-2">
-                        <i class="ti ti-currency-dollar ti-lg"></i>
-                      </div>
-                      <div class="card-info">
-                        <h5 class="mb-0"> 9745</h5>
-                        <small>Pending Documents</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> --}}
-        <!--/ Statistics -->
-
 
 
 
