@@ -29,8 +29,8 @@
                   @else
                     <h5 class="card-title mb-5" style="">Step 1: Pending Approval</h5>
                   @endif
-      
-                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary "                  
+
+                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary "
                   >Basic Information</a>
 
                 </div>
@@ -68,15 +68,15 @@
                               return !is_null($document->approved_by);
                           });
                       @endphp
-                  
+
                       @if($allDocumentsApproved)
                           <h5 class="card-title mb-5" style="">Step 2: Completed</h5>
                       @else
                           <h5 class="card-title mb-5" style="">Step 2: Pending Approval</h5>
                       @endif
                   @endif
-              
-                  <a href="{{ route('edit.documents') }}" class="btn btn-primary"                 
+
+                  <a href="{{ route('edit.documents') }}" class="btn btn-primary"
                   >Upload Documents</a>
 
 
@@ -104,7 +104,7 @@
                   @if($merchant_details->sales->isNotEmpty() && $merchant_details->services->isNotEmpty())
 
                   <h5 class="card-title mb-5" style="">Step 3: Completed</h5>
-                  <a href="#" class="btn btn-success">Account Verified</a>
+                  <a href="{{ route('merchants.preview') }}" class="btn btn-success">View Details <span style="margin: 0 2px;"></span><i class="ti ti-eye"></i></a>
                   @else
                   <h5 class="card-title mb-5" style="">Step 3: Approval  Pending </h5>
                   @endif

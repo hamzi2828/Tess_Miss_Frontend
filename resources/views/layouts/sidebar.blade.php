@@ -16,7 +16,7 @@
 
     <ul class="menu-inner py-5">
       <!-- e-commerce-app menu end -->
- 
+
       <li class="menu-item ">
         <a href="{{ route('dashboard') }}" class="menu-link">
           <i class="menu-icon tf-icons ti ti-layout-kanban"></i>
@@ -24,12 +24,12 @@
         </a>
       </li>
 
-      <li class="menu-item ">
+      {{-- <li class="menu-item ">
         <a href="#" class="menu-link">
           <i class="menu-icon tf-icons ti ti-file"></i>
           <div data-i18n="Documentation">Documentation</div>
         </a>
-      </li>
+      </li> --}}
 
       <li class="menu-item ">
         <a href="{{ route('document.history') }}" class="menu-link">
@@ -40,12 +40,6 @@
 
 
 
-      <li class="menu-item ">
-        <a href="{{ route('faqs.index') }}"  class="menu-link">
-          <i class="menu-icon tf-icons ti ti-components"></i>
-          <div data-i18n="FAQs">FAQs</div>
-        </a>
-      </li>
 
 
 
@@ -57,7 +51,7 @@
           $isMerchantServicesApproved = $user->isMerchantServiceApproved();
           $isAllApproved = $isMerchantApproved && $isMerchnatDocumentsApproved && $isMerchantSalesApproved && $isMerchantServicesApproved;
         @endphp
-  
+
         @if ($isAllApproved)
           @foreach(App\Models\Page::where('status', 'active')->get() as $page)
               <li class="menu-item {{ request()->routeIs('pages.show') && request()->segment(2) == $page->slug ? 'active' : '' }}">
@@ -77,15 +71,21 @@
             </li>
         @endforeach
         @endif
-    
+
+        <li class="menu-item ">
+            <a href="{{ route('faqs.index') }}"  class="menu-link">
+              <i class="menu-icon tf-icons ti ti-components"></i>
+              <div data-i18n="FAQs">FAQs</div>
+            </a>
+          </li>
 
 
 
 
 
-      
 
-     
+
+
     </ul>
   </aside>
   <!-- / Menu -->

@@ -60,63 +60,16 @@
                 @include('pages.merchants.preview.servicesDeatilsSection')
             @endif
 
-            {{-- Approval Section --}}
-            <div class="form-section box-container">
-                <h5 class="basic-details-header">Approval</h5>
-                <div class="mt-4 box-container">
-                    {{-- Section Ownership Details --}}
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <p><strong>KYC Added By:</strong> {{ $merchant[0]['added_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>KYC Approved By:</strong> {{ $merchant[0]['approved_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>KYC Declined By:</strong> {{ $merchant[0]['declined_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <p><strong>Documents Added By:</strong> {{ $merchant[0]['documents'][0]['added_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>Documents Approved By:</strong> {{ $merchant[0]['documents'][0]['approved_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>Documents Declined By:</strong> {{ $merchant[0]['documents'][0]['declined_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <p><strong>Sales Added By:</strong> {{ $merchant[0]['sales'][0]['added_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>Sales Approved By:</strong> {{ $merchant[0]['sales'][0]['approved_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>Sales Declined By:</strong> {{ $merchant[0]['sales'][0]['declined_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <p><strong>Services Added By:</strong> {{ $merchant[0]['services'][0]['added_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>Services Approved By:</strong> {{ $merchant[0]['services'][0]['approved_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                        <div class="col-md-4">
-                            <p><strong>Services Declined By:</strong> {{ $merchant[0]['services'][0]['declined_by']['name'] ?? 'N/A' }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
- 
-  @include('pages.merchants.components.approveOrDecline')
+
+    <div class="d-flex justify-content-end mt-4">
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back
+        </a>
+    </div>
+
 </div>
 @endsection
