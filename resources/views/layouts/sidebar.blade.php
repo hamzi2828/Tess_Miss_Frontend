@@ -65,7 +65,7 @@
         @foreach(App\Models\Page::where('status', 'active')->where('display', 'unapproved')->get() as $page)
             <li class="menu-item {{ request()->routeIs('pages.show') && request()->segment(2) == $page->slug ? 'active' : '' }}">
                 <a href="{{ route('pages.show', $page->slug) }}" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-circle"></i>
+                    <i class="menu-icon tf-icons ti ti-components"></i>
                     <div data-i18n="{{ $page->id }}">{{ $page->name }}</div>
                 </a>
             </li>
@@ -74,7 +74,7 @@
 
         <li class="menu-item ">
             <a href="{{ route('faqs.index') }}"  class="menu-link">
-              <i class="menu-icon tf-icons ti ti-components"></i>
+              <i class="menu-icon tf-icons ti ti-info-circle"></i>
               <div data-i18n="FAQs">FAQs</div>
             </a>
           </li>

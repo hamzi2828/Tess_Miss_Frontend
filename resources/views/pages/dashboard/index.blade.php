@@ -19,7 +19,7 @@
             <h5 class="card-header">Merchant Progress</h5>
             <div class="card-body">
 
-                <div class="text-light small fw-medium mb-1">Completed {{ $total_percent }}%</div>
+                <div class=" small fw-bold mb-1 ">Completed {{ $total_percent }}%</div>
                 <div class="progress">
 
                     <!-- Merchant Progress -->
