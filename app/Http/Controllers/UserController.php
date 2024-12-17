@@ -44,9 +44,9 @@ class UserController extends Controller
         $service_percent = 0;
 
         if ($merchant_details) { $merchant_percent += 25; }
-        if (!empty($merchant_details->documents)) { $document_percent = 25; }
-        if (!empty($merchant_details->sales)) { $sales_percent = 25; }
-        if (!empty($merchant_details->services)) { $service_percent = 25; }
+        if ($merchant_details->documents->isNotEmpty()) { $document_percent = 25; }
+        if ($merchant_details->sales->isNotEmpty()) { $sales_percent = 25; }
+        if ($merchant_details->services->isNotEmpty()) { $service_percent = 25; }
         $total_percent = $merchant_percent + $document_percent + $sales_percent + $service_percent;
 
         if($merchant_details){
