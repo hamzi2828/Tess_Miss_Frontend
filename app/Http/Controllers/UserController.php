@@ -43,13 +43,14 @@ class UserController extends Controller
         $sales_percent = 0;
         $service_percent = 0;
 
+
+        if($merchant_details){
+
         if ($merchant_details) { $merchant_percent += 25; }
         if ($merchant_details->documents->isNotEmpty()) { $document_percent = 25; }
         if ($merchant_details->sales->isNotEmpty()) { $sales_percent = 25; }
         if ($merchant_details->services->isNotEmpty()) { $service_percent = 25; }
         $total_percent = $merchant_percent + $document_percent + $sales_percent + $service_percent;
-
-        if($merchant_details){
             return view('pages.dashboard.index', compact('merchant_details', 'merchant_percent', 'total_percent', 'document_percent', 'sales_percent', 'service_percent'));
         }else{
             return redirect()->route('create.merchants.kfc');
