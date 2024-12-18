@@ -22,9 +22,9 @@ class UserService
         if (isset($data['userPicture']) && $data['userPicture']->isValid()) {
             $filePath = $data['userPicture']->store('uploads', 'public');
         } else {
-            $filePath = null; 
+            $filePath = null;
         }
-     
+
         // Create the user
         $user = User::create([
             'name' => $data['userFullname'],
@@ -38,7 +38,7 @@ class UserService
             'picture' => $filePath,
             'userGender' => $data['userGender'] ?? 'null',
         ]);
-        
+
         return $user;
     }
 
@@ -52,23 +52,22 @@ class UserService
     public function updateUser(User $user, array $data): User
     {
 
-      
-     
+
+
         // Update user information
         $user->name = $data['userFullname'];
         $user->email = $data['userEmail'];
         $user->phone = $data['userPhone'] ?? null;
         $user->department = $data['department_id'] ?? 'null';
-        $user->role = $data['user_role'] ?? 'null';
         $user->status = $data['userStatus'];
         $user->address = $data['userAddress'] ?? null;
         $user->userGender = $data['userGender'] ?? null;
-           
+
             // Update the password if provided
             if (!empty($data['new_password'])) {
                 $user->password = Hash::make($data['new_password']);
             }
-   
+
 
         // Handle profile picture deletion if requested
         if (isset($data['deleteUserPicture']) && $data['deleteUserPicture'] == 1) {
@@ -109,20 +108,20 @@ class UserService
     {
         // Delete previous permissions if any
         UserPermission::where('user_id', $user->id)->delete();
-    
+
         // Create or update new permissions record
         $userPermission = new UserPermission();
         $userPermission->user_id = $user->id;
         $userPermission->permissions = json_encode($permissions);
-    
+
         // Save the new permissions record
         $userPermission->save();
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 
     /**
      * Delete a user.
