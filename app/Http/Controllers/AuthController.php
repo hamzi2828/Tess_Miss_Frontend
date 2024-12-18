@@ -50,31 +50,31 @@ class AuthController extends Controller
     // Handle login
     public function login(Request $request)
     {
-  
+
         // Validate the form data
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        
+
         // Attempt to log the user in
         if (Auth::attempt($credentials)) {
 
             $user = Auth::user();
-         
+
 
             if($user->role !== 'frontendUser'){
                 Auth::logout();
-    
+
                 return back()->with('error_login', 'You are not allowed to login.');
-                      
+
             }
             if($user->status === 'inactive'){
                 Auth::logout();
                 // return redirect()->route('login');
                 return back()->with('error_login', 'Your account is inactive.');
-                      
+
             }
             // If successful, redirect to the intended page
             return redirect()->intended('/');
@@ -85,7 +85,7 @@ class AuthController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
-    
+
     // Handle logout
     public function logout(Request $request)
     {
@@ -103,18 +103,19 @@ class AuthController extends Controller
 
         // Attempt to find the user by email
         $user = User::where('email', $request->email)->first();
-    
+
+
+        // Check if the user exists
+        if (!$user) {
+            return redirect()->route('login')->with('error_login', 'We could not find a user with that email address..');
+        }
+
         // Check if the user is not a frontend user
         if ($user->role !== 'frontendUser') {
             return redirect()->route('login')->with('error_login', 'You are not authorized to request a password reset link.');
         }
-        
-        // Check if the user exists
-        if (!$user) {
-            return response()->json([
-                'error_login' => 'We could not find a user with that email address.',
-            ], 404);
-        }
+
+
 
         // Delete any existing password reset tokens for the user
         $user->remember_token = Str::random(60);
@@ -123,12 +124,12 @@ class AuthController extends Controller
 
        // Send the reset link via email
        Mail::to($user->email)->send(new SendResetLink($user->remember_token));
-    
+
 
         return back()->with('success', 'We have e-mailed your password reset link!');
     }
     public function updatePassword(Request $request){
-      
+
 
         $user = User::where('remember_token', $request->token)->first();
         if(!$user){
@@ -137,13 +138,13 @@ class AuthController extends Controller
         if ($request->password != $request->password_confirmation) {
             return redirect()->back()->withErrors(['error_foget_password' => 'Passwords do not match']);
         }
-    
+
         $user->password = Hash::make($request->password);
         $user->remember_token = null;
         $user->resetlink_created_at = null;
         $user->save();
         return redirect()->route('login')->with('success', 'Your password has been updated successfully. You can now log in with your new password.');
-    
+
 
     }
 }

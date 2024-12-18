@@ -140,9 +140,6 @@ class MerchantsController extends Controller
     public function create_documents (Request $request)
     {
 
-
-
-
         $title = 'Create Merchants Documents';
         $merchant_documents = Document::all();
         $merchant_details = null;
@@ -161,7 +158,7 @@ class MerchantsController extends Controller
 
 
             if (is_null($merchant_details->approved_by)) {
-            return redirect()->back()->with('error', 'kyc not approved yet.');
+            return redirect()->back()->with('error', 'Unauthorised Action Because KYC Approval is Pending');
             }
 
             if ($merchant_details && $merchant_details->documents->isNotEmpty() && !$merchant_details->documents->every(fn($doc) => $doc->approved_by == null) && $merchant_details->documents->every(fn($doc) => $doc->declined_by !== null))
@@ -503,7 +500,6 @@ class MerchantsController extends Controller
         }
 
         if ($merchant_details->documents->isEmpty()) {
-
             return redirect()->route('create.merchants.documents', ['merchant_id' => $merchant_id]);
         }
 

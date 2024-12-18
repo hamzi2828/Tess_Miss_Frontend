@@ -15,6 +15,12 @@
       <div class="row g-6">
         <h3 class="fw-bold">Profile Status</h3>
 
+        @if (!empty(session('error')))
+            <div class="alert alert-danger d-flex justify-content-center">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="card">
             <h5 class="card-header">Merchant Progress</h5>
             <div class="card-body">
