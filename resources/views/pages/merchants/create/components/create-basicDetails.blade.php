@@ -42,12 +42,12 @@
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="mobileNumber" class="form-label">Mobile Number <span class="required-asterisk">*</span></label>
-        <input type="tel" class="form-control" id="mobileNumber" name="mobile_number" value="{{ old('mobile_number') }}" required>
+        <input type="tel" class="form-control" id="mobileNumber" name="mobile_number" value="{{ old('mobile_number') }}" required tabindex="1">
     </div>
 
     <div class="col-md-6">
         <label for="companyActivities" class="form-label">Company Principal Activities <span class="required-asterisk">*</span></label>
-        <select class="form-select select2" id="companyActivities" name="company_activities" required>
+        <select class="form-select select2" id="companyActivities" name="company_activities" required tabindex="7">
             <option value="" disabled {{ old('company_activities') == null ? 'selected' : '' }}>Select Activities</option>
             @foreach($MerchantCategory as $parentCategory)
                 @if(is_null($parentCategory->parent_id))
@@ -78,19 +78,19 @@
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="landlineNumber" class="form-label">Landline Number <span class="required-asterisk">*</span></label>
-        <input type="tel" class="form-control" id="landlineNumber" name="landline_number" value="{{ old('landline_number') }}" required>
+        <input type="tel" class="form-control" id="landlineNumber" name="landline_number" value="{{ old('landline_number') }}" required tabindex="2">
     </div>
 
     <div class="col-md-6">
         <label for="website" class="form-label">Website</label>
-        <input type="url" class="form-control" id="website" name="website" value="{{ old('website') }}">
+        <input type="url" class="form-control" id="website" name="website" value="{{ old('website') }}" tabindex="8">
     </div>
 </div>
 
 <div class="row mb-3">
     <div class="col-md-6">
-        <label for="email" class="form-label">Email <span class="required-asterisk">*</span></label>
-        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+        <label for="email" class="form-label">Email <span class="required-asterisk">*</span></label >
+        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required tabindex="3">
         @error('email')
             <span class="text-danger">{{ $message }}</span>
         @enderror
@@ -98,42 +98,42 @@
 
     <div class="col-md-6">
         <label for="monthlyWebsiteVisitors" class="form-label">Monthly Website Visitors</label>
-        <input type="number" class="form-control" id="monthlyWebsiteVisitors" name="monthly_website_visitors" value="{{ old('monthly_website_visitors') }}">
+        <input type="number" class="form-control" id="monthlyWebsiteVisitors" name="monthly_website_visitors" value="{{ old('monthly_website_visitors') }}" tabindex="9">
     </div>
 </div>
 
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="keyPointOfContact" class="form-label">Key Point of Contact <span class="required-asterisk">*</span></label>
-        <input type="text" class="form-control" id="keyPointOfContact" name="key_point_of_contact" value="{{ old('key_point_of_contact') }}" required>
+        <input type="text" class="form-control" id="keyPointOfContact" name="key_point_of_contact" value="{{ old('key_point_of_contact') }}" required tabindex="4">
     </div>
 
     <div class="col-md-6">
         <label for="monthlyActiveUsers" class="form-label">Monthly Active Users</label>
-        <input type="number" class="form-control" id="monthlyActiveUsers" name="monthly_active_users" value="{{ old('monthly_active_users') }}">
+        <input type="number" class="form-control" id="monthlyActiveUsers" name="monthly_active_users" value="{{ old('monthly_active_users') }}" tabindex="10">
     </div>
 </div>
 
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="keyPointMobile" class="form-label">Key Point Mobile <span class="required-asterisk">*</span></label>
-        <input type="tel" class="form-control" id="keyPointMobile" name="key_point_mobile" value="{{ old('key_point_mobile') }}" required>
+        <input type="tel" class="form-control" id="keyPointMobile" name="key_point_mobile" value="{{ old('key_point_mobile') }}" requiredtabindex="5">
     </div>
 
     <div class="col-md-6">
         <label for="monthlyAvgVolume" class="form-label">Monthly Average Volume (QAR)</label>
-        <input type="number" class="form-control" id="monthlyAvgVolume" name="monthly_avg_volume" value="{{ old('monthly_avg_volume') }}">
+        <input type="number" class="form-control" id="monthlyAvgVolume" name="monthly_avg_volume" value="{{ old('monthly_avg_volume') }}" tabindex="11">
     </div>
 </div>
 
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="existingBankingPartner" class="form-label">Existing Banking Partner</label>
-        <input type="text" class="form-control" id="existingBankingPartner" name="existing_banking_partner" value="{{ old('existing_banking_partner') }}">
+        <input type="text" class="form-control" id="existingBankingPartner" name="existing_banking_partner" value="{{ old('existing_banking_partner') }}" tabindex="6">
     </div>
 
     <div class="col-md-6">
         <label for="monthlyAvgTransactions" class="form-label">Monthly Average No. Of Transactions <span class="required-asterisk">*</span></label>
-        <input type="number" class="form-control" id="monthlyAvgTransactions" name="monthly_avg_transactions" value="{{ old('monthly_avg_transactions') }}" required>
+        <input type="number" class="form-control" id="monthlyAvgTransactions" name="monthly_avg_transactions" value="{{ old('monthly_avg_transactions') }}" required tabindex="12">
     </div>
 </div>
