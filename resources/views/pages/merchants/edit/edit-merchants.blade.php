@@ -20,7 +20,7 @@
         @csrf
 
 
-        
+
         <!-- Basic Details Section -->
         <div class="form-section box-container">
 
@@ -61,14 +61,14 @@
                 <label for="operatingCountries" class="form-label">Operating Countries <span class="required-asterisk">*</span></label>
                 <select class="form-select select2" id="operatingCountries" name="operating_countries[]" multiple required>
                     @foreach($Country as $country)
-                        <option value="{{ $country->id }}" 
+                        <option value="{{ $country->id }}"
                             {{ in_array($country->id, $merchant_details['operating_countries']->pluck('id')->toArray() ?? []) ? 'selected' : '' }}>
                             {{ $country->country_name }}
                         </option>
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="mobileNumber" class="form-label">Mobile Number <span class="required-asterisk">*</span></label>
@@ -154,7 +154,7 @@
             <!-- Container for all shareholders -->
             <div id="shareholders-container">
                 @foreach($merchant_details['shareholders'] as $shareholder)
-       
+
                 <div class="shareholder-entry row mb-3">
                     <div class="col-md-3">
                         <label for="shareholderFirstName" class="form-label">First Name <span class="required-asterisk">*</span></label>
@@ -170,7 +170,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="shareholderDOB" class="form-label">(DOB) <span class="required-asterisk">*</span></label>
-                        <input type="date" class="form-control" name="shareholderDOB[]" value="{{ $shareholder['dob'] ?? '' }}" required>
+                        <input type="date" class="form-control" name="shareholderDOB[]" value="{{ $shareholder['dob'] ? \Carbon\Carbon::parse($shareholder['dob'])->format('Y-m-d') : '' }}" required>
                     </div>
                     <div class="col-md-3" >
                         <label for="shareholderNationality" class="form-label"> Nationality <span class="required-asterisk">*</span></label>
@@ -198,11 +198,11 @@
                             </div>
                         @endif
                     </div>
-            
+
                 </div>
                 @endforeach
             </div>
-            
+
 
             <!-- Add Shareholder Button -->
             <div class="text-end">
@@ -210,12 +210,12 @@
             </div>
         </div>
 
-          
 
 
-        
+
+
         <div class="d-flex justify-content-end">
-            
+
             <button type="submit" class="btn btn-primary">Save & Proceed</button>
         </div>
     </form>
@@ -229,13 +229,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Get today's date in 'YYYY-MM-DD' format
     let today = new Date().toISOString().split('T')[0];
-    
+
     document.querySelectorAll('input[type="date"]').forEach(function(dateInput) {
         dateInput.setAttribute('max', today); // Set the max attribute to today's date
     });
 });
 
-    
+
 document.addEventListener('DOMContentLoaded', function () {
     function removeShareholder() {
         document.querySelectorAll('.remove-btn').forEach(function (button) {

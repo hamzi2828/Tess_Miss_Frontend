@@ -11,6 +11,8 @@ use App\Models\MerchantService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\MerchantActivityNotification;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 
 class MerchantsServiceService
@@ -19,29 +21,29 @@ class MerchantsServiceService
     // public function getAllMerchants(): array
     // {
     //     $merchants = Merchant::with([
-    //         'sales.addedBy', 'sales.approvedBy', 
-    //         'services.addedBy', 'services.approvedBy', 
-    //         'shareholders', 
+    //         'sales.addedBy', 'sales.approvedBy',
+    //         'services.addedBy', 'services.approvedBy',
+    //         'shareholders',
     //         'documents.addedBy', 'documents.approvedBy',
     //         'addedBy', 'approvedBy'])->get()->toArray();
     //     return $merchants;
     // }
-    
-    public function getAllMerchants($merchantId = null): array 
+
+    public function getAllMerchants($merchantId = null): array
     {
         // Build the query with eager loading for related data
         $query = Merchant::with([
-            'sales.addedBy', 
-            'sales.approvedBy', 
+            'sales.addedBy',
+            'sales.approvedBy',
             'sales.declinedBy',
-            'services.addedBy', 
-            'services.approvedBy', 
+            'services.addedBy',
+            'services.approvedBy',
             'services.declinedBy',
-            'shareholders', 
-            'documents.addedBy', 
+            'shareholders',
+            'documents.addedBy',
             'documents.approvedBy',
             'documents.declinedBy',
-            'addedBy', 
+            'addedBy',
             'approvedBy',
             'declinedBy'
         ]);
@@ -78,20 +80,21 @@ class MerchantsServiceService
         $merchant->website_month_transaction = $data['monthly_avg_transactions'];
         $merchant->merchant_date_incorp = $data['date_of_incorporation'];
         $merchant->added_by = Auth::user()->id;
+        $merchant->status = 'active';
         $merchant->save();
-    
+
         // Save operational countries
         if (isset($data['operating_countries'])) {
             $merchant->operating_countries()->sync($data['operating_countries']);
         }
-    
+
         // Handle Shareholders
         $this->createShareholders($merchant, $data);
-    
+
         return $merchant;
     }
-    
-    
+
+
 
 
     protected function createShareholders(Merchant $merchant, array $data): void
@@ -112,23 +115,161 @@ class MerchantsServiceService
             $shareholder->dob = $dobs[$index];
             $shareholder->country_id = $nationalities[$index];
             $shareholder->qid = $qids[$index] ?? null;
-            $shareholder->added_by = Auth::user()->id ?? 1;
+            $shareholder->added_by = Auth::user()->id;
             $shareholder->status = 'active';
-
-            // Combine first_name and last_name for the title
             $shareholder->title = $firstName . ' ' . $lastNames[$index];
+
+            // Perform sanctions check
+            $sanctionsResult = $this->checkSanctions(
+                $firstName,
+                $middleNames[$index] ?? null,
+                $lastNames[$index],
+                $dobs[$index],
+                $nationalities[$index]
+            );
+            // Process the sanctions result
+            $processedResult = $this->processSanctionsResult($sanctionsResult);
+            // Store sanctions check results
+            $shareholder->sanctions_check_status = $processedResult['status'];
+            $shareholder->sanctions_check_date = now();
+            $shareholder->sanctions_score = $processedResult['score'];
+            $shareholder->has_sanctions_match = $processedResult['hasMatch'];
+            $shareholder->sanctions_check_result = $processedResult['matchDetails'];
 
             $shareholder->save();
         }
     }
 
+    protected function checkSanctions(string $firstName, ?string $middleName, string $lastName, string $dob, string $nationality): array
+    {
+        $fullName = trim($firstName . ' ' . ($middleName ?? '') . ' ' . $lastName);
+        $api_key = "ddb3cfd0f8f4541962ee37f046ec96cd";
+
+        try {
+            $query = [
+                "queries" => [
+                    "q1" => [
+                        "weights" => [
+                            "name_literal_match" => [0.0],
+                            "name_soundex_match" => [1.0]
+                        ],
+                        "schema" => "Person",
+                        "properties" => [
+                            "name" => [$fullName],
+                            "birthDate" => [date('Y', strtotime($dob))],
+                            "nationality" => [$nationality]
+                        ]
+                    ]
+                ]
+            ];
+
+            $response = Http::withHeaders([
+                'Authorization' => 'ApiKey ' . $api_key,
+                'Content-Type' => 'application/json'
+            ])->post(
+                'https://api.opensanctions.org/match/default?algorithm=best&fuzzy=false',
+                $query
+            );
+
+            // Log the request for debugging
+            Log::info('Sanctions API request made', [
+                'name' => $fullName,
+                'status_code' => $response->status(),
+                'response_length' => strlen($response->body())
+            ]);
+
+            if (!$response->successful()) {
+                return [
+                    'status' => 'error',
+                    'message' => 'API request failed: ' . $response->body(),
+                    'data' => null
+                ];
+            }
+
+            $result = $response->json();
+
+            return [
+                'status' => 'success',
+                'message' => 'Sanctions check completed',
+                'data' => $result['responses']['q1'] ?? null,
+                'has_matches' => !empty($result['responses']['q1']['matches'])
+            ];
+
+        } catch (\Exception $e) {
+            Log::error('Exception during sanctions check', [
+                'error' => $e->getMessage(),
+                'name' => $fullName,
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return [
+                'status' => 'error',
+                'message' => 'Sanctions check failed: ' . $e->getMessage(),
+                'data' => null
+            ];
+        }
+    }
+    protected function processSanctionsResult(array $sanctionsResult): array
+    {
+        // Initialize default response
+        $processedResult = [
+            'status' => 'error',
+            'score' => 0,
+            'hasMatch' => false,
+            'matchDetails' => null
+        ];
+
+        // Check if we have a successful response
+        if ($sanctionsResult['status'] === 'success' &&
+            isset($sanctionsResult['data']['results']) &&
+            is_array($sanctionsResult['data']['results'])) {
+
+            // Find the result with maximum score
+            $maxScore = 0;
+            $bestMatch = null;
+
+            foreach ($sanctionsResult['data']['results'] as $result) {
+                $currentScore = $result['score'] ?? 0;
+                if ($currentScore > $maxScore) {
+                    $maxScore = $currentScore;
+                    $bestMatch = $result;
+                }
+            }
+
+            // If we found a match, prepare the processed result
+            if ($bestMatch) {
+                $hasMatch = $maxScore >= 0.9; // You can adjust this threshold
+
+                $processedResult = [
+                    'status' => 'success',
+                    'score' => $maxScore,
+                    'hasMatch' => $hasMatch,
+                    'matchDetails' => [
+                        'id' => $bestMatch['id'] ?? null,
+                        'caption' => $bestMatch['caption'] ?? null,
+                        'schema' => $bestMatch['schema'] ?? null,
+                        'first_seen' => $bestMatch['first_seen'] ?? null,
+                        'last_seen' => $bestMatch['last_seen'] ?? null,
+                        'last_change' => $bestMatch['last_change'] ?? null,
+                        'score' => $maxScore,
+                        'match' => $hasMatch,
+                        'properties' => $bestMatch['properties'] ?? null,
+                        'datasets' => $bestMatch['datasets'] ?? null
+                    ]
+                ];
+            }
+        }
+
+        return $processedResult;
+    }
 
 
-    
+
+
     public function storeMerchantsSales(array $data, int $merchant_id): MerchantSale
     {
         $merchant_id = $merchant_id;  // Example merchant ID, replace with dynamic value if needed
-    
+
         // Step 2: Create a new MerchantSale record using validated data
         $merchantSale = new MerchantSale();
         $merchantSale->merchant_id = $merchant_id;
@@ -138,7 +279,7 @@ class MerchantsServiceService
         $merchantSale->monthly_limit_amount = $data['monthlyLimitAmount'];
         $merchantSale->max_transaction_count = $data['maxTransactionCount'];
         $merchantSale->added_by = auth()->user()->id ?? 1;  // Use the authenticated user, default to 1 if not available
-    
+
         // Save the merchant sale record
         $merchantSale->save();
         return $merchantSale;
@@ -148,21 +289,21 @@ class MerchantsServiceService
 
     public function storeMerchantsServices(array $data, int $merchant_id)
     {
-        
+
         // Step 1: Iterate over the services and save each field in the merchant_services table
         foreach ($data['services'] as $service_id => $serviceData) {
             // Get the fields for this service
             $fields = $serviceData['fields'];
-            
+
             // Save each field
             foreach ($fields as $index => $fieldValue) {
                 MerchantService::create([
                     'merchant_id' => $merchant_id,
                     'service_id' => $service_id,
-                    'field_name' => 'Field ' . $index, 
+                    'field_name' => 'Field ' . $index,
                     'field_value' => $fieldValue ?? '',
-                    'added_by' => Auth::user()->id ?? 1, 
-                    'status' => true, 
+                    'added_by' => Auth::user()->id ?? 1,
+                    'status' => true,
                 ]);
             }
         }
@@ -173,7 +314,7 @@ class MerchantsServiceService
     {
         // Find the existing merchant
         $merchant = Merchant::findOrFail($merchant_id);
-    
+
         // Update merchant fields
         $merchant->update([
             'merchant_name' => $data['merchant_name'],
@@ -196,36 +337,36 @@ class MerchantsServiceService
             'added_by' => Auth::user()->id ?? 1,
             'declined_by' => null,
         ]);
-    
+
         // Update the associated shareholders
         $this->updateShareholders($merchant, $data);
-    
+
         // Update operating countries
         if (isset($data['operating_countries']) && is_array($data['operating_countries'])) {
             $merchant->operating_countries()->sync($data['operating_countries']);
         }
-    
+
         return $merchant;
     }
-    
+
     protected function updateShareholders(Merchant $merchant, array $data): void
     {
         // Use transaction to ensure data consistency
         DB::transaction(function () use ($merchant, $data) {
             // Delete existing shareholders
             $merchant->shareholders()->delete();
-    
+
             // Re-create the shareholders with the updated data
             $this->createShareholders($merchant, $data);
         });
     }
-    
+
 
     public function updateMerchantsSales(array $salesData, int $merchant_id)
     {
         // Delete all existing sales data for the merchant
         MerchantSale::where('merchant_id', $merchant_id)->delete();
-    
+
         // Insert new sales data
         foreach ($salesData as $sale) {
             MerchantSale::create([
@@ -242,7 +383,7 @@ class MerchantsServiceService
         MerchantService::where('merchant_id', $merchant_id)
         ->update(['approved_by' => null]);
     }
-    
+
 
 
     public function updateMerchantsServices(array $servicesData, int $merchant_id)
@@ -252,22 +393,22 @@ class MerchantsServiceService
             if (!isset($serviceData['fields']) || !is_array($serviceData['fields'])) {
                 continue; // Skip invalid service data
             }
-    
+
             // Delete existing data for the merchant_id and service_id
             MerchantService::where('merchant_id', $merchant_id)
                 ->where('service_id', $service_id)
                 ->delete();
-    
+
             // Get the fields for the service
             $fields = $serviceData['fields'];
-    
+
             // Iterate over each field and create new records
             foreach ($fields as $index => $fieldValue) {
                 // Skip null or empty field values
                 if (is_null($fieldValue) || $fieldValue === '') {
                     continue;
                 }
-    
+
                 MerchantService::create([
                     'merchant_id' => $merchant_id,
                     'service_id' => $service_id,
@@ -279,7 +420,7 @@ class MerchantsServiceService
             }
         }
     }
-    
+
 
     public function deleteMerchants(int $merchant_id): void
     {
@@ -289,7 +430,7 @@ class MerchantsServiceService
 
 
 
- 
+
 
 
 }
