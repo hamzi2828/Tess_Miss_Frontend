@@ -1,6 +1,6 @@
 <style>
 
-   
+
 
     /* Styling for the container */
 
@@ -25,7 +25,7 @@
         background-color: #6c757d; /* Default gray */
         color: white;
         border-radius: 50%;
-        
+
         padding: 12px 20px;
         font-weight: bold;
         margin-right: 10px;
@@ -42,7 +42,7 @@
         color: black;
         z-index: 1;
         font-weight: 500;
-    } 
+    }
 </style>
 <style>
     /* Styling for the form */
@@ -55,7 +55,7 @@
 
     /* Section headers */
     .form-section h4 {
-        font-size: 1.2rem; 
+        font-size: 1.2rem;
         color: #007BFF;
         font-weight: 600;
         border-bottom: 2px solid #007BFF;
@@ -140,7 +140,7 @@
 
 <div class="header text-center mb-4" style="background-color: rgb(115,103,240); padding:2px; border-radius: 8px;">
     <h2 style="color: white;">{{ $title }}</h2>
-    
+
 </div><div class="step-container">
     <!-- Step 1: KYC -->
     <div class="step {{ in_array(Route::currentRouteName(), ['edit.merchants.kyc', 'edit.documents', 'create.merchants.documents','edit.merchants.sales', 'create.merchants.sales', 'edit.merchants.services', 'create.merchants.services']) ? 'active' : '' }}">
@@ -158,7 +158,7 @@
         </a>
     </div>
 
-    <!-- Step 3: Sales -->
+    {{-- <!-- Step 3: Sales -->
     <div class="step {{ in_array(Route::currentRouteName(), ['edit.merchants.sales', 'create.merchants.sales', 'edit.merchants.services', 'create.merchants.services']) ? 'active' : '' }}">
         <a href="#">
             <div class="step-number">3</div>
@@ -172,5 +172,5 @@
             <div class="step-number">4</div>
             <div class="step-title">Services</div>
         </a>
-    </div>
+    </div> --}}
 </div>

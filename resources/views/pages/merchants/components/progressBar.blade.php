@@ -1,6 +1,6 @@
 <style>
 
-   
+
 
     /* Styling for the container */
 
@@ -41,7 +41,7 @@
         color: black;
         z-index: 1;
         font-weight: 500;
-    } 
+    }
 </style>
 
 
@@ -126,7 +126,7 @@
            <div class="step-title">Documents</div>
         </a>
     </div>
-
+{{--
     <div class="step {{ Route::currentRouteName() == 'create.merchants.sales' ? 'active' : '' }}">
         <a href="#">
            <div class="step-number">3</div>
@@ -139,5 +139,5 @@
            <div class="step-number">4</div>
            <div class="step-title">Services</div>
         </a>
-    </div>
+    </div> --}}
 </div>
