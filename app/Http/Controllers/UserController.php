@@ -46,10 +46,43 @@ class UserController extends Controller
 
         if($merchant_details){
 
-        if ($merchant_details) { $merchant_percent += 25; }
-        if ($merchant_details->documents->isNotEmpty()) { $document_percent = 25; }
-        if ($merchant_details->sales->isNotEmpty()) { $sales_percent = 25; }
-        if ($merchant_details->services->isNotEmpty()) { $service_percent = 25; }
+        if ($merchant_details && !is_null($merchant_details->approved_by)) { $merchant_percent += 25; }
+        if ($merchant_details->documents->isNotEmpty()) {
+            // Check if all documents have a non-null 'approved_by' field
+            $allDocumentsApproved = $merchant_details->documents->every(function ($document) {
+                return !is_null($document->approved_by);
+            });
+
+            if ($allDocumentsApproved) {
+                $document_percent = 25;
+            } else {
+                $document_percent = 0;
+            }
+        }
+        if ($merchant_details->sales->isNotEmpty()) {
+            // Check if all documents have a non-null 'approved_by' field
+            $allSalesApproved = $merchant_details->sales->every(function ($sale) {
+                return !is_null($sale->approved_by);
+            });
+
+            if ($allSalesApproved) {
+                $sales_percent = 25;
+            } else {
+                $sales_percent = 0;
+            }
+        }
+        if ($merchant_details->services->isNotEmpty()) {
+            // Check if all documents have a non-null 'approved_by' field
+            $allServicesApproved = $merchant_details->services->every(function ($service) {
+                return !is_null($service->approved_by);
+            });
+
+            if ($allServicesApproved) {
+                $service_percent = 25;
+            } else {
+                $service_percent = 0;
+            }
+        }
         $total_percent = $merchant_percent + $document_percent + $sales_percent + $service_percent;
             return view('pages.dashboard.index', compact('merchant_details', 'merchant_percent', 'total_percent', 'document_percent', 'sales_percent', 'service_percent'));
         }else{
