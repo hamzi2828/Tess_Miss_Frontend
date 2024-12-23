@@ -107,6 +107,9 @@ class MerchantsController extends Controller
         $merchant = Merchant::where('added_by', auth()->user()->id)->first();
 
         if ($merchant) {
+            if (is_null($merchant->approved_by)) {
+                return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant->id]);
+                }
             return redirect()->route('merchants.preview', ['merchant_id' => $merchant->id]);
         }
 

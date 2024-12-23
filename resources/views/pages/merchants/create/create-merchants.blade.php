@@ -102,49 +102,49 @@
                         </div>
                     </div>
                     @endforeach
-                @else
-                {{-- <div id="shareholders-container">
-                    <div class="shareholder-entry row mb-3">
-                        <div class="col-md-3">
-                            <label for="shareholderFirstName" class="form-label">First Name <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" name="shareholderFirstName[]" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="shareholderMiddleName" class="form-label">Middle Name</label>
-                            <input type="text" class="form-control" name="shareholderMiddleName[]">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="shareholderLastName" class="form-label">Last Name <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" name="shareholderLastName[]" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="shareholderDOB" class="form-label">Date of Birth <span class="required-asterisk">*</span></label>
-                            <input type="date" class="form-control" name="shareholderDOB[]" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="shareholderNationality" class="form-label">Nationality <span class="required-asterisk">*</span></label>
-                            <select class="form-select select2" name="shareholderNationality[]" required>
-                                <option selected>Select Country</option>
-                                @foreach($Country as $country)
-                                    <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    @else
+                    <div id="shareholders-container">
+                        <div class="shareholder-entry row mb-3">
+                            <div class="col-md-3">
+                                <label for="shareholderFirstName" class="form-label">First Name <span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" name="shareholderFirstName[]" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="shareholderMiddleName" class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" name="shareholderMiddleName[]">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="shareholderLastName" class="form-label">Last Name <span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" name="shareholderLastName[]" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="shareholderDOB" class="form-label">Date of Birth <span class="required-asterisk">*</span></label>
+                                <input type="date" class="form-control" name="shareholderDOB[]" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="shareholderNationality" class="form-label">Nationality <span class="required-asterisk">*</span></label>
+                                <select class="form-select select2" name="shareholderNationality[]" required>
+                                    <option selected>Select Country</option>
+                                    @foreach($Country as $country)
+                                        <option value="{{ $country['id'] }}">{{ $country['country_name'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="col-md-3">
-                            <label for="shareholderID" class="form-label">QID / National ID / Passport Name <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" name="shareholderID[]" required>
-                        </div>
+                            <div class="col-md-3">
+                                <label for="shareholderID" class="form-label">QID / National ID / Passport Name <span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" name="shareholderID[]" required>
+                            </div>
 
 
-                        <div class="col-md-1">
-                            <a class="remove-btn">
-                                <i class="ti ti-trash" style="margin-top: 30px;"></i>
-                            </a>
+                            <div class="col-md-1">
+                                <a class="remove-btn">
+                                    <i class="ti ti-trash" style="margin-top: 30px;"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div> --}}
-                @endif
+                    @endif
 
             <!-- Add Shareholder Button -->
             <div class="text-end">

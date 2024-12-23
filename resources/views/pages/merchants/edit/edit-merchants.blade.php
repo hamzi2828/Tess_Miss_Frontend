@@ -62,7 +62,7 @@
                 <select class="form-select select2" id="operatingCountries" name="operating_countries[]" multiple required>
                     @foreach($Country as $country)
                         <option value="{{ $country->id }}"
-                            {{ in_array($country->id, $merchant_details['operating_countries'] ?? []) ? 'selected' : '' }}>
+                            {{ in_array($country->id, $merchant_details['operating_countries']->pluck('id')->toArray() ?? []) ? 'selected' : '' }}>
                             {{ $country->country_name }}
                         </option>
                     @endforeach
