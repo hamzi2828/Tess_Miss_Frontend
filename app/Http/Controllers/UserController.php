@@ -198,8 +198,8 @@ class UserController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
-            'userEmail' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
+            'userEmail' => 'required|email|max:255|unique:users,email,'.$user->id,
+            'phone' => 'required|string|max:20|unique:users,phone,'.$user->id,
             'department_id' => 'required|exists:departments,id',
             'user_role' => 'nullable|string|max:50',
             'userStatus' => 'required|string|in:active,inactive',
@@ -240,72 +240,72 @@ class UserController extends Controller
 
 
 
-        public function activityLogs()
-        {
-            $logs = ActivityLog::with('user')->orderBy('created_at', 'desc')->paginate(10);
-            return view('pages.activity_logs.activity_logs', compact('logs'));
-        }
+    public function activityLogs()
+    {
+        $logs = ActivityLog::with('user')->orderBy('created_at', 'desc')->paginate(10);
+        return view('pages.activity_logs.activity_logs', compact('logs'));
+    }
 
-        public function activityMyLogs()
-        {
-            $logs = ActivityLog::with('user')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
-            return view('pages.activity_logs.activity_logs', compact('logs'));
-        }
-
-
-        public function markAsRead($id, Request $request)
-        {
-
-            $notification = Auth::user()->notifications->where('id', $id)->first();
-
-            if ($notification) {
-                $notification->markAsRead();
-                $activityType = $notification->data['activity_type'] ?? null;
-                $merchant_id =  $request->get('merchant_id');
+    public function activityMyLogs()
+    {
+        $logs = ActivityLog::with('user')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        return view('pages.activity_logs.activity_logs', compact('logs'));
+    }
 
 
-                if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'store') {
+    public function markAsRead($id, Request $request)
+    {
 
-                    return redirect()->route('merchants.preview', ['merchant_id' => $merchant_id]);
-                }
-                // if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'approve') {
+        $notification = Auth::user()->notifications->where('id', $id)->first();
 
-                //     return redirect()->route('edit.merchants.services', ['merchant_id' => $merchant_id]);
-                // }
-                if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'approve' || $activityType == 'decline') {
-
-                    $userStage = auth()->user()->getDepartmentStage(auth()->user()->department);
-                    $userrole = auth()->user()->getUserRoleById(auth()->user()->id);
+        if ($notification) {
+            $notification->markAsRead();
+            $activityType = $notification->data['activity_type'] ?? null;
+            $merchant_id =  $request->get('merchant_id');
 
 
-                    if($userrole == 'frontendUser'){
-                        $merchant = Merchant::where('id', $merchant_id)->first();
-                        if($merchant->approved_by == null){
-                            // return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
-                            return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+            if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'store') {
 
-                        }else{
-                            return redirect()->route('edit.documents', ['merchant_id' => $merchant_id]);
-                        }
+                return redirect()->route('merchants.preview', ['merchant_id' => $merchant_id]);
+            }
+            // if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'approve') {
+
+            //     return redirect()->route('edit.merchants.services', ['merchant_id' => $merchant_id]);
+            // }
+            if (\App\Models\Merchant::where('id', $merchant_id)->exists() && $activityType == 'approve' || $activityType == 'decline') {
+
+                $userStage = auth()->user()->getDepartmentStage(auth()->user()->department);
+                $userrole = auth()->user()->getUserRoleById(auth()->user()->id);
+
+
+                if($userrole == 'frontendUser'){
+                    $merchant = Merchant::where('id', $merchant_id)->first();
+                    if($merchant->approved_by == null){
+                        // return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+                        return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant_id]);
+
+                    }else{
+                        return redirect()->route('edit.documents', ['merchant_id' => $merchant_id]);
                     }
-                    // Determine the route name dynamically based on stage
-                    $routeName = $userStage == 1
-                        ? 'edit.merchants.kyc'
-                        : ($userStage == 2
-                            ? 'edit.documents'
-                            : ($userStage == 3
-                                ? 'edit.merchants.sales'
-                                : 'edit.merchants.services'));
-
-                    // Redirect to the appropriate route
-                    return redirect()->route($routeName, ['merchant_id' => $merchant_id]);
                 }
+                // Determine the route name dynamically based on stage
+                $routeName = $userStage == 1
+                    ? 'edit.merchants.kyc'
+                    : ($userStage == 2
+                        ? 'edit.documents'
+                        : ($userStage == 3
+                            ? 'edit.merchants.sales'
+                            : 'edit.merchants.services'));
 
-
+                // Redirect to the appropriate route
+                return redirect()->route($routeName, ['merchant_id' => $merchant_id]);
             }
 
-            return redirect()->back();
+
         }
+
+        return redirect()->back();
+    }
 
 
 

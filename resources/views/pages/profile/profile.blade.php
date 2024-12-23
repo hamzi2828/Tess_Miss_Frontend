@@ -4,6 +4,8 @@
 
 <div class="container-xxl flex-grow-1 container-p-y d-flex justify-content-center align-items-center" style="min-height: 100vh;">
 
+
+
     <form method="POST" action="{{ route('users.update', $user->id) }}" enctype="multipart/form-data" class="w-100" style="max-width: 900px;">
          @csrf
         @method('PUT')
@@ -13,6 +15,28 @@
         <!-- Left Side: User Details -->
         <div class="col-md-12">
             <div class="card shadow-lg p-4 card-custom">
+
+
+        @if ($message = Session::get('success'))
+
+        <div class="alert alert-success text-center">
+
+            <p>{{ $message }}</p>
+
+        </div>
+
+    @endif
+
+                @if ($errors->any())
+                <div class="alert alert-danger text-center">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
                 <h4 class="fw-bold text-primary mb-4">Edit Profile</h4>
 
                 <!-- Full Name -->
@@ -29,8 +53,8 @@
 
                 <!-- Phone -->
                 <div class="mb-4">
-                    <label class="form-label fw-medium text-secondary" for="userPhone">Phone</label>
-                    <input type="tel" id="userPhone" class="form-control" name="userPhone" value="{{ $user->phone }}" />
+                    <label class="form-label fw-medium text-secondary" for="phone">Phone</label>
+                    <input type="tel" id="phone" class="form-control" name="phone" value="{{ $user->phone }}" />
                 </div>
                 {{-- Gender --}}
                 <div class="mb-4" style="display: none;">
@@ -104,10 +128,11 @@
                     </div>
                 </div>
 
+
                 <!-- Address -->
                 <div class="mb-4">
                     <label class="form-label fw-medium text-secondary" for="userAddress">Address</label>
-                    <textarea id="userAddress" class="form-control" name="userAddress" rows="3">{{ $user->address }}</textarea>
+                    <textarea id="userAddress" class="form-control" name="userAddress" rows="3">{{ $user->address == "null" ? "" : $user->address }}</textarea>
                 </div>
 
                 <!-- Submit & Cancel Buttons -->

@@ -57,7 +57,7 @@ class UserService
         // Update user information
         $user->name = $data['userFullname'];
         $user->email = $data['userEmail'];
-        $user->phone = $data['userPhone'] ?? null;
+        $user->phone = $data['phone'] ?? null;
         $user->department = $data['department_id'] ?? 'null';
         $user->status = $data['userStatus'];
         $user->address = $data['userAddress'] ?? null;

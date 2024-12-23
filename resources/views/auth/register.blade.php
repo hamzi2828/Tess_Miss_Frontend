@@ -10,7 +10,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-  
+
     <title>@yield('title', 'Admin')</title>
     <meta name="description" content="" />
 
@@ -185,11 +185,21 @@
         <!-- Register -->
         <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
           <div class="w-px-400 mx-auto mt-12 pt-5">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <h4 class="mb-1">Welcome to Tess 🚀</h4>
 
             <form id="formAuthentication" class="mb-6" action="{{ route('users.store') }}" method="POST">
               @csrf  <!-- This is necessary for POST requests in Laravel -->
-          
+
               <div class="mb-6">
                   <label for="userFullname" class="form-label">Merchant Name</label>
                   <input
@@ -213,7 +223,7 @@
                     <i data-feather="phone" class="icon text-primary"></i>
                   </span>
                   <input
-                    type="number"
+                    type="text"
                     class="form-control @error('phone') is-invalid @enderror phone-number-mask"
                     id="phone"
                     name="phone"
@@ -227,7 +237,7 @@
                 @enderror
             </div>
 
-          
+
               <div class="mb-6">
                   <label for="email" class="form-label">Email</label>
                   <input
@@ -242,43 +252,42 @@
                       <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
               </div>
-          
               <div class="mb-6 form-password-toggle">
-                  <label class="form-label" for="password">Password</label>
-                  <div class="input-group input-group-merge">
-                      <input
-                          type="password"
-                          id="password"
-                          class="form-control @error('password') is-invalid @enderror"
-                          name="password"
-                          placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                          aria-describedby="password"
-                      />
-                      <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
-                  </div>
-                  @error('password')
-                      <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-              </div>
-          
-              <div class="mb-6 form-password-toggle">
-                  <label class="form-label" for="password_confirmation">Confirm Password</label>
-                  <div class="input-group input-group-merge">
-                      <input
-                          type="password"
-                          id="password_confirmation"
-                          class="form-control @error('password_confirmation') is-invalid @enderror"
-                          name="password_confirmation"
-                          placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                          aria-describedby="password_confirmation"
-                      />
-                      <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
-                  </div>
-                  @error('password_confirmation')
-                  <div class="invalid-feedback">{{ $message }}</div>
+                <label class="form-label" for="password">Password</label>
+                <div class="input-group input-group-merge">
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-control @error('password') is-invalid @enderror"
+                        name="password"
+                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                    />
+                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                </div>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-              </div>
-          
+            </div>
+
+
+            <div class="mb-6 form-password-toggle">
+                <label class="form-label" for="password_confirmation">Confirm Password</label>
+                <div class="input-group input-group-merge">
+                    <input
+                        type="password"
+                        id="password_confirmation"
+                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                        name="password_confirmation"
+                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                    />
+                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                </div>
+                @error('password_confirmation')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+
               <div class="mb-6 mt-8">
                   <div class="form-check mb-8 ms-2">
                       <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox" id="terms-conditions" name="terms" {{ old('terms') ? 'checked' : '' }} required />
@@ -294,10 +303,10 @@
                       <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
               </div>
-          
+
               <button class="btn btn-primary d-grid w-100">Sign up</button>
           </form>
-          
+
 
             <p class="text-center">
               <span>Already have an account?</span>
@@ -306,7 +315,7 @@
               </a>
             </p>
 
-  
+
           </div>
         </div>
         <!-- /Register -->
