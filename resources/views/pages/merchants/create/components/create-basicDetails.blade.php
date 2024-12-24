@@ -3,7 +3,7 @@
 
     <div class="col-md-6">
         <label for="merchantName" class="form-label">Merchant Name <span class="required-asterisk">*</span></label>
-        <input type="text" class="form-control" id="merchantName" name="merchant_name" value="{{ old('merchant_name', auth()->user()->name) }}" required>
+        <input type="text" class="form-control" id="merchantName" name="merchant_name" value="{{ old('merchant_name') }}" required>
     </div>
 
     <div class="col-md-6">
@@ -108,7 +108,7 @@
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="keyPointOfContact" class="form-label">Key Point of Contact <span class="required-asterisk">*</span></label>
-        <input type="text" class="form-control" id="keyPointOfContact" name="key_point_of_contact" value="{{ old('key_point_of_contact') }}" required tabindex="4">
+        <input type="text" class="form-control" id="keyPointOfContact" name="key_point_of_contact" value="{{ old('key_point_of_contact' , auth()->user()->name) }}" required tabindex="4">
     </div>
 
     <div class="col-md-6">
