@@ -45,7 +45,7 @@
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="mobileNumber" class="form-label">Mobile Number <span class="required-asterisk">*</span></label>
-        <input type="tel" class="form-control" id="mobileNumber" name="mobile_number" value="{{ old('mobile_number', auth()->user()->phone) }}" required tabindex="1">
+        <input type="tel" class="form-control" id="mobileNumber" name="mobile_number" value="{{ old('mobile_number') }}" required tabindex="1">
     </div>
 
     <div class="col-md-6">
@@ -120,7 +120,7 @@
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="keyPointMobile" class="form-label">Key Point Mobile <span class="required-asterisk">*</span></label>
-        <input type="tel" class="form-control" id="keyPointMobile" name="key_point_mobile" value="{{ old('key_point_mobile') }}" requiredtabindex="5">
+        <input type="tel" class="form-control" id="keyPointMobile" name="key_point_mobile" value="{{ old('key_point_mobile', auth()->user()->phone) }}" required tabindex="5">
     </div>
 
     <div class="col-md-6">
