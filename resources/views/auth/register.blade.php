@@ -209,6 +209,7 @@
                       name="userFullname"
                       placeholder="Enter contact person name"
                       value="{{ old('userFullname') }}"
+                      maxlength="64"
                       autofocus
                   />
                   @error('userFullname')
@@ -229,7 +230,8 @@
                     name="phone"
                     placeholder="Enter your phone number"
                     value="{{ old('phone') }}"
-                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 17);"
+                    maxlength="17"
                     autofocus
                   />
                 </div>
@@ -238,19 +240,20 @@
                 @enderror
             </div>
 
-
               <div class="mb-6">
                   <label for="email" class="form-label">Email</label>
                   <input
-                      type="text"
+                      type="email"
                       class="form-control @error('userEmail') is-invalid @enderror"
                       id="userEmail"
                       name="userEmail"
                       placeholder="Enter your userEmail"
                       value="{{ old('userEmail') }}"
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                      title="Please enter a valid email address"
                   />
                   @error('userEmail')
-                      {{-- <div class="invalid-feedback">{{ $message }}</div> --}}
+                      <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
               </div>
               <div class="mb-6 form-password-toggle">
