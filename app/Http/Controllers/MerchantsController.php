@@ -337,9 +337,22 @@ class MerchantsController extends Controller
 
                 $file = $request->file($key);
 
-                // Use Laravel's store method to save the file in the 'public/documents' directory
-                $filePath = $file->storeAs('documents', $document_id . '_' . ($shareholder_name ? $shareholder_name . '_' : '') . $file->getClientOriginalName(), 'public');
-                 File::copy(storage_path('app/public/' . $filePath), public_path('storage/' . $filePath));
+                // // Use Laravel's store method to save the file in the 'public/documents' directory
+                // $filePath = $file->storeAs('documents', $document_id . '_' . ($shareholder_name ? $shareholder_name . '_' : '') . $file->getClientOriginalName(), 'public');
+                //  File::copy(storage_path('app/public/' . $filePath), public_path('storage/' . $filePath));
+
+                // Define the path to the backend storage directory
+            $backendStoragePath = base_path('../storage/app/public/documents');
+
+            // Generate the filename
+            $fileName = $document_id . '_' . ($shareholder_name ? $shareholder_name . '_' : '') . $file->getClientOriginalName();
+
+            // Move the file directly to the backend storage
+            $file->move($backendStoragePath, $fileName);
+
+            // Set the file path relative to the backend storage
+            $filePath = 'documents/' . $fileName;
+
 
                 // Save the document information to the database
                 MerchantDocument::create([
