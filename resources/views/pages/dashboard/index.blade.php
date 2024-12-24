@@ -151,7 +151,7 @@
                 <div class="card-body text-nowrap mb-5">
                   <h5 class="card-title mb-5" style="font-weight: bold;">Account Verification</h5>
 
-                  @if($merchant_details->sales->isNotEmpty() && $merchant_details->services->isNotEmpty())
+                  @if($merchant_details->sales->isNotEmpty() &&  $merchant_details->services->every(fn($service) => is_null($service->approved_by)))
 
                   <h5 class="card-title mb-5" style="">Step 3: Completed</h5>
                   <a href="{{ route('merchants.preview') }}" class="btn btn-success">View Details <span style="margin: 0 2px;"></span><i class="ti ti-eye"></i></a>
