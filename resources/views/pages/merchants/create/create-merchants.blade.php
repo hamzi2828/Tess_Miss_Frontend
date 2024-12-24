@@ -59,7 +59,10 @@
         <!-- Shareholders Section with Add Button -->
         <div class="form-section box-container">
             <h4 class="mb-3">Shareholders</h4>
-
+    <!-- Add Shareholder Button -->
+    <div class="text-end">
+        <button type="button" id="add-shareholder-btn" class="btn btn-success">+ Add Shareholder</button>
+    </div>
             <div id="shareholders-container">
                 @if(count($oldShareholderFirstNames) > 0)
                     @foreach($oldShareholderFirstNames as $index => $firstName)
@@ -146,10 +149,7 @@
                     </div>
                     @endif
 
-            <!-- Add Shareholder Button -->
-            <div class="text-end">
-                <button type="button" id="add-shareholder-btn" class="btn btn-success">+ Add Shareholder</button>
-            </div>
+
         </div>
 
 

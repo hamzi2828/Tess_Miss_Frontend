@@ -1,7 +1,9 @@
 <div class="row mb-3">
+
+
     <div class="col-md-6">
         <label for="merchantName" class="form-label">Merchant Name <span class="required-asterisk">*</span></label>
-        <input type="text" class="form-control" id="merchantName" name="merchant_name" value="{{ old('merchant_name') }}" required>
+        <input type="text" class="form-control" id="merchantName" name="merchant_name" value="{{ old('merchant_name', auth()->user()->name) }}" required>
     </div>
 
     <div class="col-md-6">
@@ -39,10 +41,11 @@
         @endforeach
     </select>
 </div>
+
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="mobileNumber" class="form-label">Mobile Number <span class="required-asterisk">*</span></label>
-        <input type="tel" class="form-control" id="mobileNumber" name="mobile_number" value="{{ old('mobile_number') }}" required tabindex="1">
+        <input type="tel" class="form-control" id="mobileNumber" name="mobile_number" value="{{ old('mobile_number', auth()->user()->phone) }}" required tabindex="1">
     </div>
 
     <div class="col-md-6">
@@ -90,7 +93,7 @@
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="email" class="form-label">Email <span class="required-asterisk">*</span></label >
-        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required tabindex="3">
+        <input type="email" class="form-control" id="email" name="email" value="{{ old('email', auth()->user()->email) }}" readonly tabindex="3">
         @error('email')
             <span class="text-danger">{{ $message }}</span>
         @enderror

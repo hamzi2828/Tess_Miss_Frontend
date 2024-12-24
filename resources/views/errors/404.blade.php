@@ -38,7 +38,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="error-code">404</div>
+        {{-- <div class="error-code">404</div> --}}
         <div class="error-message">Looks like this page is on vacation. Let’s get you back on track</div>
 
         <div>Every end is a new beginning.   <a href="{{ url('/') }}" class="home-link">Click here to start fresh</a>     </div>

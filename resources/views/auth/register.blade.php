@@ -201,18 +201,18 @@
               @csrf  <!-- This is necessary for POST requests in Laravel -->
 
               <div class="mb-6">
-                  <label for="userFullname" class="form-label">Merchant Name</label>
+                  <label for="userFullname" class="form-label">Contact Person Name</label>
                   <input
                       type="text"
                       class="form-control @error('userFullname') is-invalid @enderror"
                       id="userFullname"
                       name="userFullname"
-                      placeholder="Enter your merchant name"
+                      placeholder="Enter contact person name"
                       value="{{ old('userFullname') }}"
                       autofocus
                   />
                   @error('userFullname')
-                      <div class="invalid-feedback">{{ $message }}</div>
+                      {{-- <div class="invalid-feedback">{{ $message }}</div> --}}
                   @enderror
               </div>
 
@@ -229,11 +229,12 @@
                     name="phone"
                     placeholder="Enter your phone number"
                     value="{{ old('phone') }}"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                     autofocus
                   />
                 </div>
                 @error('phone')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    {{-- <div class="invalid-feedback">{{ $message }}</div> --}}
                 @enderror
             </div>
 
@@ -249,7 +250,7 @@
                       value="{{ old('userEmail') }}"
                   />
                   @error('userEmail')
-                      <div class="invalid-feedback">{{ $message }}</div>
+                      {{-- <div class="invalid-feedback">{{ $message }}</div> --}}
                   @enderror
               </div>
               <div class="mb-6 form-password-toggle">

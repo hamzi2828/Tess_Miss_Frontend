@@ -46,6 +46,7 @@
                 </div>
 
                 <!-- Email -->
+
                 <div class="mb-4">
                     <label class="form-label fw-medium text-secondary" for="userEmail">Email</label>
                     <input type="email" id="userEmail" class="form-control" name="userEmail" value="{{ $user->email }}" readonly />
