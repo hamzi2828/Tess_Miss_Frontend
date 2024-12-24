@@ -154,7 +154,7 @@
 
 
         <div style="margin-top: 20px" class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Screen</button>
+            <button type="submit" class="btn btn-primary">Save & Proceed</button>
         </div>
     </form>
 </div>
