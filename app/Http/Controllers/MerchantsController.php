@@ -107,12 +107,12 @@ class MerchantsController extends Controller
         $merchant = Merchant::where('added_by', auth()->user()->id)->first();
 
         if ($merchant) {
-            if (is_null($merchant->approved_by)) {
+            if (!is_null($merchant->approved_by)) {
                 return redirect()->route('edit.merchants.kyc', ['merchant_id' => $merchant->id]);
                 }
             return redirect()->route('merchants.preview', ['merchant_id' => $merchant->id]);
         }
-
+ 
 
         $title = 'Create Merchants KYC';
         $MerchantCategory = MerchantCategory::all();
@@ -285,9 +285,12 @@ class MerchantsController extends Controller
          try {
              // Create the merchant using the service
              $merchant = $this->merchantsService->createMerchants($validatedData);
-             $this->notificationService->storeMerchantsKYC($merchant);
 
-             return redirect()->route('dashboard')->with('success', 'Merchant KYC successfully added.');
+             // Notify about KYC creation
+                //  $this->notificationService->storeMerchantsKYC($merchant);
+
+             // Redirect with a success message
+             return redirect() ->route('edit.merchants.kyc', ['merchant_id' => $merchant->id])->with('success', 'Merchant and Shareholders successfully added.');
          } catch (\Exception $e) {
              // Log the error for debugging
              \Log::error('Error storing merchant KYC: ' . $e->getMessage());
@@ -433,13 +436,13 @@ class MerchantsController extends Controller
      */
 
 
-     public function edit_merchant(Request $request)
+     public function edit_merchants(Request $request)
      {
 
         $merchant_id = $request->input('merchant_id');
 
         $title = 'Edit Merchants Details';
-        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents', 'operating_countries'])->where('id', $merchant_id)->first();
+        $merchant_details = Merchant::with(['documents', 'sales', 'services', 'shareholders'])->where('added_by', auth()->user()->id)->first();
 
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
@@ -448,11 +451,12 @@ class MerchantsController extends Controller
         if (!$merchant_details) {
             return redirect()->route('create.merchants.kfc', ['merchant_id' => $merchant_id]);
         }
+
         // if($merchant_details->declined_by == null){
         //     return redirect()->back()->with('error', 'kyc not declined yet.');
         // }
         if($merchant_details->approved_by !== null && $merchant_details->declined_by == null){
-            return redirect()->route('preview.merchants.kyc', ['merchant_id' => $merchant_id]);
+            return redirect()->route('merchants.preview', ['merchant_id' => $merchant_id]);
         }
         // if (!auth()->user()->can('changeKYC', auth()->user()))
         // {
@@ -506,7 +510,11 @@ class MerchantsController extends Controller
             return redirect()->route('create.merchants.documents', ['merchant_id' => $merchant_id]);
         }
 
-        if($merchant_details->approved_by !== null && $merchant_details->declined_by == null){
+        if($merchant_details->documents->every(fn($doc) => $doc->approved_by) == null && $merchant_details->documents->every(fn($doc) => $doc->declined_by !== null)){
+            return redirect()->route('create.merchants.documents', ['merchant_id' => $merchant_id]);
+        }
+
+        if($merchant_details->documents->every(fn($doc) => $doc->approved_by)){
             return redirect()->route('preview.documents', ['merchant_id' => $merchant_id]);
         }
 

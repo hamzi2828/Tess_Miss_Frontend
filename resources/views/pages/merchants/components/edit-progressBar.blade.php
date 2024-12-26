@@ -144,7 +144,7 @@
 </div><div class="step-container">
     <!-- Step 1: KYC -->
     <div class="step {{ in_array(Route::currentRouteName(), ['edit.merchants.kyc', 'edit.documents', 'create.merchants.documents','edit.merchants.sales', 'create.merchants.sales', 'edit.merchants.services', 'create.merchants.services']) ? 'active' : '' }}">
-        <a href="{{ route('edit.merchants.kyc', ['merchant_id' => request()->merchant_id]) }}">
+        <a href="{{ route('edit.merchants', ['merchant_id' => request()->merchant_id]) }}">
             <div class="step-number">1</div>
             <div class="step-title">KYC</div>
         </a>

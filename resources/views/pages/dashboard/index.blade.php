@@ -78,12 +78,18 @@
 
                   @if($merchant_details->approved_by)
                     <h5 class="card-title mb-5" style="">Step 1: Completed</h5>
+                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary ">Basic Information</a>
                   @else
                     <h5 class="card-title mb-5" style="">Step 1: Pending Approval</h5>
+                    
+                      @if($merchant_details->declined_by)
+                        <a href="{{ route('edit.merchants') }}" class="btn btn-primary ">Basic Information</a>
+                        @else
+                        <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary ">Basic Information</a>
+                      @endif
+                  
+                    
                   @endif
-
-                    <a href="{{ route('create.merchants.kfc') }}" class="btn btn-primary "
-                  >Basic Information</a>
 
                 </div>
 
@@ -126,8 +132,7 @@
                       @endif
                   @endif
 
-                  <a href="{{ route('edit.documents') }}" class="btn btn-primary"
-                  >Upload Documents</a>
+                  <a href="{{ route('edit.documents') }}" class="btn btn-primary">Upload Documents</a>
 
 
                 </div>

@@ -188,7 +188,6 @@
                     @if($shareholder['sanctions_check_status'] === 'success' )
                         <div class="col-md-3">
                                 <div class="col-md-12 mt-7">
-                                    <span class="badge bg-danger">Score in Sanctions List : {{ $shareholder['sanctions_score'] }}</span>
                                 </div>
                         </div>
                     @endif
